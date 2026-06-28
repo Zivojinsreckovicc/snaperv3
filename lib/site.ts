@@ -9,6 +9,8 @@ export const siteConfig = {
   // and canonical/OG URLs across the site.
   url: "https://snaperdigital.com",
   locale: "en_US",
+  // Google Analytics 4 measurement ID (carried over from the previous site).
+  gaId: "G-76QZVV1FWE",
   description:
     "Snaper Digital builds modern, conversion-focused websites and practical AI automation systems that help businesses get more leads and save time.",
   tagline: "Modern websites & AI automation that drive real business results.",

@@ -5,9 +5,11 @@ import { Footer } from "@/components/layout/footer";
 import { Container, Eyebrow, GradientText, Heading, Lead } from "@/components/ui";
 import { Reveal } from "@/components/motion/reveal";
 import { PostCard } from "@/components/blog/post-card";
+import { JsonLd } from "@/components/seo/json-ld";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { POSTS_QUERY } from "@/sanity/lib/queries";
 import type { PostCard as PostCardData } from "@/sanity/lib/types";
+import { buildBlogIndexJsonLd } from "@/lib/structured-data";
 import { siteConfig } from "@/lib/site";
 
 export const revalidate = 60;
@@ -47,6 +49,7 @@ export default async function BlogPage() {
 
   return (
     <>
+      <JsonLd data={buildBlogIndexJsonLd(posts)} />
       <Header />
       <main>
         {/* Hero */}

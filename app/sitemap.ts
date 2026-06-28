@@ -16,12 +16,17 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/contact",
     "/blog",
     ...serviceSlugs.map((slug) => `/services/${slug}`),
-  ].map((path) => ({
-    url: `${base}${path}`,
-    lastModified: new Date(),
-    changeFrequency: "weekly",
-    priority: path === "" ? 1 : 0.8,
-  }));
+    "/privacy",
+    "/terms",
+  ].map((path) => {
+    const isLegal = path === "/privacy" || path === "/terms";
+    return {
+      url: `${base}${path}`,
+      lastModified: new Date(),
+      changeFrequency: isLegal ? "yearly" : "weekly",
+      priority: path === "" ? 1 : isLegal ? 0.3 : 0.8,
+    };
+  });
 
   let posts: MetadataRoute.Sitemap = [];
   try {

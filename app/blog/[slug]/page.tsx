@@ -92,24 +92,47 @@ export default async function BlogPostPage({ params }: RouteProps) {
 
   const jsonLd = {
     "@context": "https://schema.org",
-    "@type": "BlogPosting",
-    "@id": `${url}/#article`,
-    headline: post.title,
-    description: post.seo?.description,
-    image: post.seo?.ogImage
-      ? urlFor(post.seo.ogImage).width(1200).height(630).url()
-      : undefined,
-    datePublished: post.publishedAt,
-    dateModified: post._updatedAt,
-    author: post.author?.name
-      ? { "@type": "Person", name: post.author.name }
-      : undefined,
-    publisher: {
-      "@type": "Organization",
-      name: siteConfig.name,
-      logo: { "@type": "ImageObject", url: `${siteConfig.url}${siteConfig.logo}` },
-    },
-    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    "@graph": [
+      {
+        "@type": "BlogPosting",
+        "@id": `${url}/#article`,
+        headline: post.title,
+        description: post.seo?.description,
+        image: post.seo?.ogImage
+          ? urlFor(post.seo.ogImage).width(1200).height(630).url()
+          : undefined,
+        datePublished: post.publishedAt,
+        dateModified: post._updatedAt,
+        articleSection: category,
+        author: post.author?.name
+          ? { "@type": "Person", name: post.author.name, url: post.author.link }
+          : undefined,
+        publisher: {
+          "@type": "Organization",
+          name: siteConfig.name,
+          logo: {
+            "@type": "ImageObject",
+            url: `${siteConfig.url}${siteConfig.logo}`,
+          },
+        },
+        isPartOf: { "@id": `${siteConfig.url}/blog/#blog` },
+        mainEntityOfPage: { "@type": "WebPage", "@id": url },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}/#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: `${siteConfig.url}/blog`,
+          },
+          { "@type": "ListItem", position: 3, name: post.title, item: url },
+        ],
+      },
+    ],
   };
 
   return (

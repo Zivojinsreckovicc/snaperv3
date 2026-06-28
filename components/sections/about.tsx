@@ -30,7 +30,7 @@ export function About() {
                 className="object-cover object-top"
               />
             </div>
-            <figcaption className="mt-4 px-6 text-sm text-muted-foreground sm:px-8 lg:px-0">
+            <figcaption className="mt-4 px-6 py-5 text-sm text-center text-muted-foreground sm:px-8 lg:px-0">
               <span className="font-medium text-foreground">
                 Zivojin Sreckovic
               </span>
@@ -40,7 +40,10 @@ export function About() {
         </Reveal>
 
         {/* Copy */}
-        <Reveal delay={0.1} className="order-2 px-6 sm:px-8 lg:max-w-xl lg:pr-10">
+        <Reveal
+          delay={0.1}
+          className="order-2 px-6 sm:px-8 lg:max-w-xl lg:pr-10"
+        >
           <Badge variant="muted">About Snaper Digital</Badge>
           <Heading as={2} size="lg" className="mt-5">
             Your senior digital partner.

@@ -1,6 +1,146 @@
-import { services, siteConfig } from "@/lib/site";
+import { primaryNav, services, siteConfig } from "@/lib/site";
 import { projects } from "@/lib/projects";
 import { pricingTiers } from "@/lib/pricing";
+
+/**
+ * Builds the site-wide SiteNavigationElement graph from `primaryNav`. Rendered
+ * once in the root layout so every page exposes the primary navigation to
+ * search engines. Top-level items plus the Services dropdown children are
+ * flattened into individual nodes; relative hrefs are resolved to absolute URLs.
+ */
+export function buildSiteNavigationJsonLd() {
+  const abs = (href: string) =>
+    href.startsWith("http")
+      ? href
+      : `${siteConfig.url}${href === "/" ? "" : href}`;
+
+  // Flatten top-level items + dropdown children, de-duplicating by URL so the
+  // "All Services" link (which points back to /services) isn't listed twice.
+  const seen = new Set<string>();
+  const items: { name: string; url: string }[] = [];
+  for (const item of primaryNav) {
+    const url = abs(item.href);
+    if (!seen.has(url)) {
+      seen.add(url);
+      items.push({ name: item.label, url });
+    }
+    for (const child of item.children ?? []) {
+      const childUrl = abs(child.href);
+      if (!seen.has(childUrl)) {
+        seen.add(childUrl);
+        items.push({ name: child.label, url: childUrl });
+      }
+    }
+  }
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": items.map((item, i) => ({
+      "@type": "SiteNavigationElement",
+      "@id": `${siteConfig.url}/#nav-${i + 1}`,
+      position: i + 1,
+      name: item.name,
+      url: item.url,
+      isPartOf: { "@id": `${siteConfig.url}/#website` },
+    })),
+  };
+}
+
+/**
+ * Builds the JSON-LD graph for a simple legal/utility page (e.g. /privacy): a
+ * WebPage tied to the site's Organization/WebSite plus a Home -> {name}
+ * BreadcrumbList. `path` is the clean route (e.g. "/privacy").
+ */
+export function buildLegalPageJsonLd(opts: {
+  name: string;
+  path: string;
+  description: string;
+}) {
+  const orgId = `${siteConfig.url}/#organization`;
+  const url = `${siteConfig.url}${opts.path}`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}/#webpage`,
+        url,
+        name: opts.name,
+        description: opts.description,
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        about: { "@id": orgId },
+        inLanguage: "en",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}/#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          { "@type": "ListItem", position: 2, name: opts.name, item: url },
+        ],
+      },
+    ],
+  };
+}
+
+/**
+ * Builds the JSON-LD graph for the /blog index: a Blog node tied to the site's
+ * Organization/WebSite, a BreadcrumbList, and an ItemList of BlogPosting entries
+ * (one per published post). Reuses the shared @id nodes for a connected graph.
+ */
+export function buildBlogIndexJsonLd(
+  posts: { slug: string; title: string; excerpt?: string; publishedAt?: string }[]
+) {
+  const orgId = `${siteConfig.url}/#organization`;
+  const blogUrl = `${siteConfig.url}/blog`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Blog",
+        "@id": `${blogUrl}/#blog`,
+        url: blogUrl,
+        name: `${siteConfig.name} Blog`,
+        description:
+          "Practical articles on web design, development, conversion and AI automation from the Snaper Digital team.",
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        publisher: { "@id": orgId },
+        inLanguage: "en",
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${blogUrl}/#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          { "@type": "ListItem", position: 2, name: "Blog", item: blogUrl },
+        ],
+      },
+      {
+        "@type": "ItemList",
+        "@id": `${blogUrl}/#posts`,
+        itemListOrder: "https://schema.org/ItemListOrderDescending",
+        numberOfItems: posts.length,
+        itemListElement: posts.map((p, i) => ({
+          "@type": "ListItem",
+          position: i + 1,
+          url: `${blogUrl}/${p.slug}`,
+          item: {
+            "@type": "BlogPosting",
+            "@id": `${blogUrl}/${p.slug}/#article`,
+            headline: p.title,
+            description: p.excerpt,
+            url: `${blogUrl}/${p.slug}`,
+            datePublished: p.publishedAt,
+            author: { "@id": orgId },
+            publisher: { "@id": orgId },
+          },
+        })),
+      },
+    ],
+  };
+}
 
 /**
  * Builds the JSON-LD graph for the home page: Organization, WebSite,
