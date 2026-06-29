@@ -16,8 +16,13 @@ export function About() {
   return (
     <Section id="about" surface="default" className="overflow-hidden">
       {/* Full-bleed grid (no Container) so the portrait can run to the left
-          edge of the screen. */}
-      <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+          edge of the screen. Capped to a centered 1536px frame: up to that
+          width the frame equals the viewport (laptop/mobile unchanged, the
+          portrait still bleeds to the screen edge); beyond it the frame caps
+          and centers so the layout keeps the laptop composition instead of
+          stretching the image and stranding the copy on ultra-wide (2K+)
+          screens. */}
+      <div className="mx-auto grid max-w-[1536px] items-center gap-10 lg:grid-cols-2 lg:gap-16">
         {/* Founder portrait — bleeds to the left edge of the viewport */}
         <Reveal className="order-1">
           <figure className="relative">

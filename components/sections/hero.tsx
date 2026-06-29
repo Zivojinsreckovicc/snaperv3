@@ -68,26 +68,35 @@ export function Hero() {
       />
 
       {/* Visual: oversized interactive 3D Earth, anchored to the right edge and
-          deliberately bleeding off-screen (clipped by the section). Desktop only. */}
-      <div className="absolute inset-y-0 right-0 z-0 hidden w-[58vw] max-w-[60rem] translate-x-[12%] lg:block">
-        {/* No CSS glow box here on purpose — the 3D scene renders its own
-            circular atmosphere halo. A rectangular blurred glow div reads as
-            a square "container" around the globe. */}
-        <HeroGlobeScene />
-        <FloatChip
-          className="left-[2%] top-[26%]"
-          icon={<Globe weight="light" className="h-5 w-5" />}
-          value="Worldwide"
-          title="Remote delivery"
-          delay={0.7}
-        />
-        <FloatChip
-          className="left-[7%] bottom-[24%]"
-          icon={<TrendUp weight="bold" className="h-5 w-5" />}
-          value="+312% leads"
-          title="Avg. client growth"
-          delay={1.1}
-        />
+          deliberately bleeding off-screen (clipped by the section). Desktop only.
+
+          The globe lives inside a centered max-width frame rather than the raw
+          viewport. Up to 1536px the frame equals the viewport, so laptop/tablet
+          are unchanged; beyond that the frame caps and centers, so the globe
+          keeps tracking the content frame instead of drifting to the far edge
+          on ultra-wide (2K+) screens. Sizing is frame-relative (58%) so it
+          matches the laptop composition exactly. */}
+      <div className="absolute inset-y-0 left-1/2 z-0 hidden w-full max-w-[1536px] -translate-x-1/2 lg:block">
+        <div className="absolute inset-y-0 right-0 w-[58%] max-w-[60rem] translate-x-[12%]">
+          {/* No CSS glow box here on purpose — the 3D scene renders its own
+              circular atmosphere halo. A rectangular blurred glow div reads as
+              a square "container" around the globe. */}
+          <HeroGlobeScene />
+          <FloatChip
+            className="left-[2%] top-[26%]"
+            icon={<Globe weight="light" className="h-5 w-5" />}
+            value="Worldwide"
+            title="Remote delivery"
+            delay={0.7}
+          />
+          <FloatChip
+            className="left-[7%] bottom-[24%]"
+            icon={<TrendUp weight="bold" className="h-5 w-5" />}
+            value="+312% leads"
+            title="Avg. client growth"
+            delay={1.1}
+          />
+        </div>
       </div>
 
       <Container className="pointer-events-none relative z-10 flex min-h-[100dvh] flex-col justify-center pb-20 pt-28 lg:pt-24">
