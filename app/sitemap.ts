@@ -2,6 +2,7 @@ import type { MetadataRoute } from "next";
 import { client } from "@/sanity/lib/client";
 import { POSTS_SITEMAP_QUERY } from "@/sanity/lib/queries";
 import { serviceSlugs } from "@/lib/services-data";
+import { authorSlugs } from "@/lib/authors";
 import { siteConfig } from "@/lib/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
@@ -16,6 +17,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     "/contact",
     "/blog",
     ...serviceSlugs.map((slug) => `/services/${slug}`),
+    ...authorSlugs.map((slug) => `/authors/${slug}`),
     "/privacy",
     "/terms",
   ].map((path) => {

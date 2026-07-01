@@ -57,6 +57,22 @@ export const POST_QUERY = defineQuery(`
   }
 `);
 
+/** Published posts by a given author slug, newest first, for author pages. */
+export const POSTS_BY_AUTHOR_QUERY = defineQuery(`
+  *[_type == "post" && defined(slug.current) && author->slug.current == $slug]
+  | order(coalesce(publishedAt, _createdAt) desc) {
+    _id,
+    title,
+    "slug": slug.current,
+    excerpt,
+    featured,
+    publishedAt,
+    mainImage { ${imageFields} },
+    "author": author->{ name, role, "slug": slug.current },
+    "categories": categories[]->{ _id, title, "slug": slug.current }
+  }
+`);
+
 /** Slugs for generateStaticParams. */
 export const POST_SLUGS_QUERY = defineQuery(`
   *[_type == "post" && defined(slug.current)]{ "slug": slug.current }

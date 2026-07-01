@@ -15,6 +15,7 @@ import { POST_QUERY, POST_SLUGS_QUERY } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
 import { formatDate, readingTime } from "@/sanity/lib/format";
 import type { PostFull } from "@/sanity/lib/types";
+import { authorSlugs } from "@/lib/authors";
 import { siteConfig } from "@/lib/site";
 
 export const revalidate = 60;
@@ -90,6 +91,12 @@ export default async function BlogPostPage({ params }: RouteProps) {
   const minutes = readingTime(post.body);
   const category = post.categories?.[0]?.title;
 
+  // Link the byline to the author's profile page only when one exists.
+  const authorHref =
+    post.author?.slug && authorSlugs.includes(post.author.slug)
+      ? `/authors/${post.author.slug}`
+      : null;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@graph": [
@@ -105,7 +112,13 @@ export default async function BlogPostPage({ params }: RouteProps) {
         dateModified: post._updatedAt,
         articleSection: category,
         author: post.author?.name
-          ? { "@type": "Person", name: post.author.name, url: post.author.link }
+          ? {
+              "@type": "Person",
+              name: post.author.name,
+              url: authorHref
+                ? `${siteConfig.url}${authorHref}`
+                : post.author.link,
+            }
           : undefined,
         publisher: {
           "@type": "Organization",
@@ -191,28 +204,56 @@ export default async function BlogPostPage({ params }: RouteProps) {
                 ) : null}
 
                 {post.author?.name ? (
-                  <div className="mt-7 flex items-center gap-3">
-                    {post.author.image ? (
-                      <span className="relative h-11 w-11 overflow-hidden rounded-full border border-border">
-                        <SanityImage
-                          value={post.author.image}
-                          fill
-                          width={88}
-                          sizes="44px"
-                        />
-                      </span>
-                    ) : null}
-                    <span className="text-sm">
-                      <span className="block font-medium text-foreground">
-                        {post.author.name}
-                      </span>
-                      {post.author.role ? (
-                        <span className="block text-muted-foreground">
-                          {post.author.role}
+                  authorHref ? (
+                    <Link
+                      href={authorHref}
+                      className="group mt-7 inline-flex items-center gap-3"
+                    >
+                      {post.author.image ? (
+                        <span className="relative h-11 w-11 overflow-hidden rounded-full border border-border transition-colors group-hover:border-accent">
+                          <SanityImage
+                            value={post.author.image}
+                            fill
+                            width={88}
+                            sizes="44px"
+                          />
                         </span>
                       ) : null}
-                    </span>
-                  </div>
+                      <span className="text-sm">
+                        <span className="block font-medium text-foreground transition-colors group-hover:text-accent">
+                          {post.author.name}
+                        </span>
+                        {post.author.role ? (
+                          <span className="block text-muted-foreground">
+                            {post.author.role}
+                          </span>
+                        ) : null}
+                      </span>
+                    </Link>
+                  ) : (
+                    <div className="mt-7 flex items-center gap-3">
+                      {post.author.image ? (
+                        <span className="relative h-11 w-11 overflow-hidden rounded-full border border-border">
+                          <SanityImage
+                            value={post.author.image}
+                            fill
+                            width={88}
+                            sizes="44px"
+                          />
+                        </span>
+                      ) : null}
+                      <span className="text-sm">
+                        <span className="block font-medium text-foreground">
+                          {post.author.name}
+                        </span>
+                        {post.author.role ? (
+                          <span className="block text-muted-foreground">
+                            {post.author.role}
+                          </span>
+                        ) : null}
+                      </span>
+                    </div>
+                  )
                 ) : null}
               </Reveal>
             </div>
@@ -264,6 +305,18 @@ export default async function BlogPostPage({ params }: RouteProps) {
                   <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
                     {post.author.bio}
                   </p>
+                  {authorHref ? (
+                    <Link
+                      href={authorHref}
+                      className="group mt-3 inline-flex items-center gap-1.5 text-sm font-medium text-accent underline-offset-4 hover:underline"
+                    >
+                      View full profile
+                      <CaretRight
+                        weight="bold"
+                        className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5"
+                      />
+                    </Link>
+                  ) : null}
                 </div>
               </div>
             ) : null}

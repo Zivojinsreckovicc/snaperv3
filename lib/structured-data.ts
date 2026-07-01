@@ -1,6 +1,7 @@
 import { primaryNav, services, siteConfig } from "@/lib/site";
 import { projects } from "@/lib/projects";
 import { pricingTiers } from "@/lib/pricing";
+import type { AuthorProfile } from "@/lib/authors";
 
 /**
  * Builds the site-wide SiteNavigationElement graph from `primaryNav`. Rendered
@@ -137,6 +138,63 @@ export function buildBlogIndexJsonLd(
             publisher: { "@id": orgId },
           },
         })),
+      },
+    ],
+  };
+}
+
+/**
+ * Builds the JSON-LD graph for an author profile page (/authors/[slug]): a
+ * ProfilePage whose mainEntity is a Person (jobTitle, knowsAbout, worksFor the
+ * Organization), plus a Home -> Blog -> {name} BreadcrumbList. Reuses the
+ * Organization @id for a connected graph.
+ */
+export function buildAuthorJsonLd(author: AuthorProfile) {
+  const orgId = `${siteConfig.url}/#organization`;
+  const url = `${siteConfig.url}/authors/${author.slug}`;
+  const personId = `${url}/#person`;
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "ProfilePage",
+        "@id": `${url}/#webpage`,
+        url,
+        name: `${author.name} — ${author.role}`,
+        description: author.metaDescription,
+        isPartOf: { "@id": `${siteConfig.url}/#website` },
+        about: { "@id": personId },
+        mainEntity: { "@id": personId },
+        inLanguage: "en",
+      },
+      {
+        "@type": "Person",
+        "@id": personId,
+        name: author.name,
+        url,
+        jobTitle: author.role,
+        description: author.tagline,
+        image: author.image ? `${siteConfig.url}${author.image}` : undefined,
+        knowsAbout: author.expertise,
+        worksFor: { "@id": orgId },
+        sameAs: author.socials.length
+          ? author.socials.map((s) => s.href)
+          : undefined,
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": `${url}/#breadcrumb`,
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: "Blog",
+            item: `${siteConfig.url}/blog`,
+          },
+          { "@type": "ListItem", position: 3, name: author.name, item: url },
+        ],
       },
     ],
   };

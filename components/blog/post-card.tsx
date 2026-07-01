@@ -71,6 +71,9 @@ export function PostCard({
               By <span className="text-foreground">{post.author.name}</span>
             </p>
           ) : null}
+          {/* Note: the card is a single <Link> to the post, so the author name
+              can't be its own link here — the author page is linked from the
+              full article byline instead. */}
         </div>
       </Link>
     </Reveal>
