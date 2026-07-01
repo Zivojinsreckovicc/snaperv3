@@ -148,7 +148,7 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 flex flex-col bg-background/95 px-6 pb-10 pt-28 backdrop-blur-2xl lg:hidden"
+            className="fixed inset-0 z-40 flex flex-col overflow-y-auto overscroll-contain bg-background/95 px-6 pb-10 pt-24 backdrop-blur-2xl lg:hidden"
           >
             {/* Explicit close — the header's hamburger sits behind this overlay,
                 so the menu needs its own reachable close button. */}
@@ -156,7 +156,7 @@ export function Header() {
               type="button"
               onClick={() => setOpen(false)}
               aria-label="Close menu"
-              className="absolute right-6 top-7 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/60 text-foreground transition-colors hover:border-border-strong hover:bg-muted"
+              className="fixed right-6 top-7 flex h-10 w-10 items-center justify-center rounded-full border border-border bg-card/60 text-foreground transition-colors hover:border-border-strong hover:bg-muted"
             >
               <X weight="bold" className="h-5 w-5" />
             </button>
@@ -177,7 +177,7 @@ export function Header() {
                     href={item.href}
                     onClick={() => setOpen(false)}
                     className={cn(
-                      "block py-4 font-display text-2xl font-medium text-foreground",
+                      "block py-3.5 font-display text-2xl font-medium text-foreground",
                       !item.children && "border-b border-border"
                     )}
                   >
