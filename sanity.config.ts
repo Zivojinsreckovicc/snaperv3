@@ -7,6 +7,7 @@
 import { defineConfig } from "sanity";
 import { structureTool } from "sanity/structure";
 import { visionTool } from "@sanity/vision";
+import { table } from "@sanity/table";
 import { apiVersion, dataset, projectId } from "./sanity/env";
 import { schema } from "./sanity/schemaTypes";
 import { structure } from "./sanity/structure";
@@ -20,6 +21,8 @@ export default defineConfig({
   schema,
   plugins: [
     structureTool({ structure }),
+    // Spreadsheet-style table editor for the blog body.
+    table(),
     // GROQ playground, available at /studio/vision
     visionTool({ defaultApiVersion: apiVersion }),
   ],

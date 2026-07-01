@@ -84,5 +84,9 @@ export const blockContentType = defineType({
         select: { title: "caption", subtitle: "alt", media: "asset" },
       },
     }),
+    // Data tables (from @sanity/table) — spreadsheet-style editing in Studio.
+    defineArrayMember({ type: "table" }),
+    // Styled, collapsible FAQ sections (rendered by the frontend).
+    defineArrayMember({ type: "faqSection" }),
   ],
 });

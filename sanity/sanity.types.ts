@@ -37,6 +37,35 @@ export type Seo = {
   noIndex?: boolean;
 };
 
+export type FaqSection = {
+  _type: "faqSection";
+  heading?: string;
+  items?: Array<{
+    question?: string;
+    answer?: Array<{
+      children?: Array<{
+        marks?: Array<string>;
+        text?: string;
+        _type: "span";
+        _key: string;
+      }>;
+      style?: "normal";
+      listItem?: "bullet" | "number";
+      markDefs?: Array<{
+        href?: string;
+        openInNewTab?: boolean;
+        _type: "link";
+        _key: string;
+      }>;
+      level?: number;
+      _type: "block";
+      _key: string;
+    }>;
+    _type: "faqItem";
+    _key: string;
+  }>;
+};
+
 export type BlockContent = Array<
   | {
       children?: Array<{
@@ -67,6 +96,12 @@ export type BlockContent = Array<
       _type: "image";
       _key: string;
     }
+  | ({
+      _key: string;
+    } & Table)
+  | ({
+      _key: string;
+    } & FaqSection)
 >;
 
 export type Category = {
@@ -165,6 +200,20 @@ export type Author = {
   };
   bio?: string;
   link?: string;
+};
+
+export type Table = {
+  _type: "table";
+  rows?: Array<
+    {
+      _key: string;
+    } & TableRow
+  >;
+};
+
+export type TableRow = {
+  _type: "tableRow";
+  cells?: Array<string>;
 };
 
 export type SanityImagePaletteSwatch = {
@@ -267,6 +316,7 @@ export type Geopoint = {
 export type AllSanitySchemaTypes =
   | SanityImageAssetReference
   | Seo
+  | FaqSection
   | BlockContent
   | Category
   | Slug
@@ -276,6 +326,8 @@ export type AllSanitySchemaTypes =
   | SanityImageCrop
   | SanityImageHotspot
   | Author
+  | Table
+  | TableRow
   | SanityImagePaletteSwatch
   | SanityImagePalette
   | SanityImageDimensions
@@ -360,6 +412,35 @@ export type POST_QUERY_RESULT = {
         _key: string;
       }
     | {
+        _key: string;
+        _type: "faqSection";
+        heading?: string;
+        items?: Array<{
+          question?: string;
+          answer?: Array<{
+            children?: Array<{
+              marks?: Array<string>;
+              text?: string;
+              _type: "span";
+              _key: string;
+            }>;
+            style?: "normal";
+            listItem?: "bullet" | "number";
+            markDefs?: Array<{
+              href?: string;
+              openInNewTab?: boolean;
+              _type: "link";
+              _key: string;
+            }>;
+            level?: number;
+            _type: "block";
+            _key: string;
+          }>;
+          _type: "faqItem";
+          _key: string;
+        }>;
+      }
+    | {
         asset?: SanityImageAssetReference;
         media?: unknown;
         hotspot?: SanityImageHotspot;
@@ -370,6 +451,15 @@ export type POST_QUERY_RESULT = {
         _key: string;
         lqip: string | null;
         dimensions: SanityImageDimensions | null;
+      }
+    | {
+        _key: string;
+        _type: "table";
+        rows?: Array<
+          {
+            _key: string;
+          } & TableRow
+        >;
       }
   > | null;
   author: {

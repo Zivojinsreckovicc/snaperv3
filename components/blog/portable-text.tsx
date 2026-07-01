@@ -4,6 +4,8 @@ import {
   type PortableTextBlock,
 } from "next-sanity";
 import { SanityImage } from "./sanity-image";
+import { BlogTable } from "./blog-table";
+import { BlogFaq } from "./blog-faq";
 
 const components: PortableTextComponents = {
   block: {
@@ -87,6 +89,8 @@ const components: PortableTextComponents = {
         </figure>
       );
     },
+    table: ({ value }) => <BlogTable value={value} />,
+    faqSection: ({ value }) => <BlogFaq value={value} />,
   },
 };
 
