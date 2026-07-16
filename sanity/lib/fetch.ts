@@ -3,8 +3,9 @@ import { client } from "./client";
 
 /**
  * Thin fetch wrapper with ISR caching. Published content updates appear within
- * `revalidate` seconds; pass `tags` (and wire a webhook later) for instant,
- * surgical revalidation. Use `fresh: true` to bypass the CDN (static params).
+ * `revalidate` seconds. `tags` are still attached for optional manual/webhook
+ * revalidation later, but don't disable the time-based refresh on their own.
+ * Use `fresh: true` to bypass the CDN (static params).
  */
 export async function sanityFetch<T>({
   query,
@@ -21,7 +22,7 @@ export async function sanityFetch<T>({
 }): Promise<T> {
   return client.withConfig({ useCdn: !fresh }).fetch<T>(query, params, {
     next: {
-      revalidate: tags.length ? false : revalidate,
+      revalidate,
       tags,
     },
   });
