@@ -102,9 +102,9 @@ function heroVisual(service: ServiceContent) {
         <div className="relative">
           {glow}
           <BrowserFrame
-            src="/imgs/portfolioimages/dominioneurope.webp"
-            alt="A custom storefront built by Snaper Digital"
-            url="dominioneurope.com"
+            src="/imgs/ecommerce-hero.webp"
+            alt="A custom headless storefront designed and built by Snaper Digital"
+            aspect="aspect-[16/9]"
             priority
             sizes="(min-width: 1024px) 46vw, 90vw"
           />
