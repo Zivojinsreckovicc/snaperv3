@@ -1,5 +1,6 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
-import { HelpCircleIcon, LinkIcon } from "@sanity/icons";
+import { HelpCircleIcon } from "@sanity/icons";
+import { simpleBlock } from "./shared";
 
 /**
  * An FAQ section embedded in the blog body. Content is authored here; the
@@ -39,48 +40,8 @@ export const faqType = defineType({
               title: "Answer",
               type: "array",
               validation: (rule) => rule.required(),
-              of: [
-                defineArrayMember({
-                  type: "block",
-                  // Keep answers simple: paragraphs, lists, and inline emphasis.
-                  styles: [{ title: "Normal", value: "normal" }],
-                  lists: [
-                    { title: "Bullet", value: "bullet" },
-                    { title: "Numbered", value: "number" },
-                  ],
-                  marks: {
-                    decorators: [
-                      { title: "Bold", value: "strong" },
-                      { title: "Italic", value: "em" },
-                    ],
-                    annotations: [
-                      defineArrayMember({
-                        name: "link",
-                        title: "Link",
-                        type: "object",
-                        icon: LinkIcon,
-                        fields: [
-                          defineField({
-                            name: "href",
-                            title: "URL",
-                            type: "url",
-                            validation: (rule) =>
-                              rule
-                                .required()
-                                .uri({ scheme: ["https", "http", "mailto", "tel"] }),
-                          }),
-                          defineField({
-                            name: "openInNewTab",
-                            title: "Open in new tab",
-                            type: "boolean",
-                            initialValue: false,
-                          }),
-                        ],
-                      }),
-                    ],
-                  },
-                }),
-              ],
+              // Keep answers simple: paragraphs, lists, and inline emphasis.
+              of: [simpleBlock],
             }),
           ],
           preview: {

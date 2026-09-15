@@ -36,7 +36,25 @@ export const POST_QUERY = defineQuery(`
     mainImage { ${imageFields} },
     body[] {
       ...,
-      _type == "image" => { ${imageFields} }
+      // Inline links to other posts resolve to a live URL at query time.
+      _type == "block" => {
+        markDefs[] {
+          ...,
+          _type == "internalLink" => {
+            "href": "/blog/" + @.reference->slug.current
+          }
+        }
+      },
+      _type == "image" => { ${imageFields} },
+      _type == "imageGallery" => {
+        ...,
+        images[] { ${imageFields} }
+      },
+      _type == "video" => {
+        ...,
+        poster { ${imageFields} },
+        "file": file.asset->{ url, mimeType }
+      }
     },
     "author": author->{
       name,

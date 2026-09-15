@@ -15,6 +15,35 @@
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
 // Source: sanity/extract.json
+export type PrimaryCta = {
+  label?: string;
+  href?: string;
+  openInNewTab?: boolean;
+};
+
+export type SecondaryCta = {
+  label?: string;
+  href?: string;
+  openInNewTab?: boolean;
+};
+
+export type TableOfContents = {
+  _type: "tableOfContents";
+  title?: string;
+  includeH3?: boolean;
+};
+
+export type HtmlEmbed = {
+  _type: "htmlEmbed";
+  label?: string;
+  html?: string;
+};
+
+export type Divider = {
+  _type: "divider";
+  style?: "line" | "dots" | "space";
+};
+
 export type SanityImageAssetReference = {
   _ref: string;
   _type: "reference";
@@ -22,19 +51,101 @@ export type SanityImageAssetReference = {
   [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
 };
 
-export type Seo = {
-  _type: "seo";
-  metaTitle?: string;
-  metaDescription?: string;
-  ogImage?: {
+export type ImageGallery = {
+  _type: "imageGallery";
+  images?: Array<{
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    _type: "image";
+    _key: string;
+  }>;
+  columns?: 2 | 3;
+  caption?: string;
+};
+
+export type PullQuote = {
+  _type: "pullQuote";
+  quote?: string;
+  attribution?: string;
+  role?: string;
+};
+
+export type Callout = {
+  _type: "callout";
+  tone?: "info" | "tip" | "warning" | "success";
+  title?: string;
+  body?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
+      _key: string;
+    }>;
+    style?: "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      openInNewTab?: boolean;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
+    _key: string;
+  }>;
+};
+
+export type LinkButton = {
+  _type: "linkButton";
+  label?: string;
+  href?: string;
+  openInNewTab?: boolean;
+  variant?: "gradient" | "outline";
+  align?: "left" | "center";
+};
+
+export type CtaBanner = {
+  _type: "ctaBanner";
+  variant?: "spotlight" | "split" | "solid";
+  eyebrow?: string;
+  heading?: string;
+  text?: string;
+  primaryCta?: PrimaryCta;
+  secondaryCta?: SecondaryCta;
+  showPhone?: boolean;
+};
+
+export type SanityFileAssetReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "sanity.fileAsset";
+};
+
+export type Video = {
+  _type: "video";
+  source?: "embed" | "upload";
+  url?: string;
+  file?: {
+    asset?: SanityFileAssetReference;
+    media?: unknown;
+    _type: "file";
+  };
+  autoplay?: boolean;
+  poster?: {
     asset?: SanityImageAssetReference;
     media?: unknown;
     hotspot?: SanityImageHotspot;
     crop?: SanityImageCrop;
     _type: "image";
   };
-  canonicalUrl?: string;
-  noIndex?: boolean;
+  aspectRatio?: "16/9" | "4/3" | "1/1" | "9/16";
+  title?: string;
+  caption?: string;
 };
 
 export type FaqSection = {
@@ -66,6 +177,28 @@ export type FaqSection = {
   }>;
 };
 
+export type Seo = {
+  _type: "seo";
+  metaTitle?: string;
+  metaDescription?: string;
+  ogImage?: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  canonicalUrl?: string;
+  noIndex?: boolean;
+};
+
+export type PostReference = {
+  _ref: string;
+  _type: "reference";
+  _weak?: boolean;
+  [internalGroqTypeReferenceTo]?: "post";
+};
+
 export type BlockContent = Array<
   | {
       children?: Array<{
@@ -75,13 +208,20 @@ export type BlockContent = Array<
         _key: string;
       }>;
       style?: "normal" | "h2" | "h3" | "h4" | "blockquote";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        href?: string;
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
+      listItem?: "bullet" | "number" | "check";
+      markDefs?: Array<
+        | {
+            href?: string;
+            openInNewTab?: boolean;
+            _type: "link";
+            _key: string;
+          }
+        | {
+            reference?: PostReference;
+            _type: "internalLink";
+            _key: string;
+          }
+      >;
       level?: number;
       _type: "block";
       _key: string;
@@ -93,15 +233,46 @@ export type BlockContent = Array<
       crop?: SanityImageCrop;
       alt?: string;
       caption?: string;
+      link?: string;
       _type: "image";
       _key: string;
     }
+  | ({
+      _key: string;
+    } & ImageGallery)
+  | ({
+      _key: string;
+    } & Video)
+  | ({
+      _key: string;
+    } & CtaBanner)
+  | ({
+      _key: string;
+    } & LinkButton)
+  | ({
+      _key: string;
+    } & Callout)
+  | ({
+      _key: string;
+    } & PullQuote)
+  | ({
+      _key: string;
+    } & Code)
   | ({
       _key: string;
     } & Table)
   | ({
       _key: string;
     } & FaqSection)
+  | ({
+      _key: string;
+    } & TableOfContents)
+  | ({
+      _key: string;
+    } & Divider)
+  | ({
+      _key: string;
+    } & HtmlEmbed)
 >;
 
 export type Category = {
@@ -200,6 +371,14 @@ export type Author = {
   };
   bio?: string;
   link?: string;
+};
+
+export type Code = {
+  _type: "code";
+  language?: string;
+  filename?: string;
+  code?: string;
+  highlightedLines?: Array<number>;
 };
 
 export type Table = {
@@ -314,9 +493,22 @@ export type Geopoint = {
 };
 
 export type AllSanitySchemaTypes =
+  | PrimaryCta
+  | SecondaryCta
+  | TableOfContents
+  | HtmlEmbed
+  | Divider
   | SanityImageAssetReference
-  | Seo
+  | ImageGallery
+  | PullQuote
+  | Callout
+  | LinkButton
+  | CtaBanner
+  | SanityFileAssetReference
+  | Video
   | FaqSection
+  | Seo
+  | PostReference
   | BlockContent
   | Category
   | Slug
@@ -326,6 +518,7 @@ export type AllSanitySchemaTypes =
   | SanityImageCrop
   | SanityImageHotspot
   | Author
+  | Code
   | Table
   | TableRow
   | SanityImagePaletteSwatch
@@ -372,7 +565,7 @@ export type POSTS_QUERY_RESULT = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: POST_QUERY
-// Query: *[_type == "post" && slug.current == $slug][0] {    _id,    title,    "slug": slug.current,    excerpt,    publishedAt,    _updatedAt,    mainImage {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },    body[] {      ...,      _type == "image" => {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions }    },    "author": author->{      name,      role,      bio,      link,      "slug": slug.current,      image {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions }    },    "categories": categories[]->{ _id, title, "slug": slug.current },    "seo": {      "title": coalesce(seo.metaTitle, title),      "description": coalesce(seo.metaDescription, excerpt),      "ogImage": coalesce(seo.ogImage, mainImage),      "canonicalUrl": seo.canonicalUrl,      "noIndex": seo.noIndex == true    }  }
+// Query: *[_type == "post" && slug.current == $slug][0] {    _id,    title,    "slug": slug.current,    excerpt,    publishedAt,    _updatedAt,    mainImage {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },    body[] {      ...,      // Inline links to other posts resolve to a live URL at query time.      _type == "block" => {        markDefs[] {          ...,          _type == "internalLink" => {            "href": "/blog/" + @.reference->slug.current          }        }      },      _type == "image" => {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },      _type == "imageGallery" => {        ...,        images[] {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions }      },      _type == "video" => {        ...,        poster {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },        "file": file.asset->{ url, mimeType }      }    },    "author": author->{      name,      role,      bio,      link,      "slug": slug.current,      image {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions }    },    "categories": categories[]->{ _id, title, "slug": slug.current },    "seo": {      "title": coalesce(seo.metaTitle, title),      "description": coalesce(seo.metaDescription, excerpt),      "ogImage": coalesce(seo.ogImage, mainImage),      "canonicalUrl": seo.canonicalUrl,      "noIndex": seo.noIndex == true    }  }
 export type POST_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -400,16 +593,73 @@ export type POST_QUERY_RESULT = {
           _key: string;
         }>;
         style?: "blockquote" | "h2" | "h3" | "h4" | "normal";
-        listItem?: "bullet" | "number";
-        markDefs?: Array<{
-          href?: string;
-          openInNewTab?: boolean;
-          _type: "link";
-          _key: string;
-        }>;
+        listItem?: "bullet" | "check" | "number";
+        markDefs: Array<
+          | {
+              reference?: PostReference;
+              _type: "internalLink";
+              _key: string;
+              href: string | null;
+            }
+          | {
+              href?: string;
+              openInNewTab?: boolean;
+              _type: "link";
+              _key: string;
+            }
+        > | null;
         level?: number;
         _type: "block";
         _key: string;
+      }
+    | {
+        _key: string;
+        _type: "callout";
+        tone?: "info" | "success" | "tip" | "warning";
+        title?: string;
+        body?: Array<{
+          children?: Array<{
+            marks?: Array<string>;
+            text?: string;
+            _type: "span";
+            _key: string;
+          }>;
+          style?: "normal";
+          listItem?: "bullet" | "number";
+          markDefs?: Array<{
+            href?: string;
+            openInNewTab?: boolean;
+            _type: "link";
+            _key: string;
+          }>;
+          level?: number;
+          _type: "block";
+          _key: string;
+        }>;
+      }
+    | {
+        _key: string;
+        _type: "code";
+        language?: string;
+        filename?: string;
+        code?: string;
+        highlightedLines?: Array<number>;
+      }
+    | {
+        _key: string;
+        _type: "ctaBanner";
+        variant?: "solid" | "split" | "spotlight";
+        eyebrow?: string;
+        heading?: string;
+        text?: string;
+        primaryCta?: PrimaryCta;
+        secondaryCta?: SecondaryCta;
+        showPhone?: boolean;
+      }
+    | {
+        _key: string;
+        _type: "divider";
+        style?: "dots" | "line" | "space";
       }
     | {
         _key: string;
@@ -441,16 +691,57 @@ export type POST_QUERY_RESULT = {
         }>;
       }
     | {
+        _key: string;
+        _type: "htmlEmbed";
+        label?: string;
+        html?: string;
+      }
+    | {
         asset?: SanityImageAssetReference;
         media?: unknown;
         hotspot?: SanityImageHotspot;
         crop?: SanityImageCrop;
         alt?: string;
         caption?: string;
+        link?: string;
         _type: "image";
         _key: string;
         lqip: string | null;
         dimensions: SanityImageDimensions | null;
+      }
+    | {
+        _key: string;
+        _type: "imageGallery";
+        images: Array<{
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          alt?: string;
+          caption?: string;
+          _type: "image";
+          _key: string;
+          lqip: string | null;
+          dimensions: SanityImageDimensions | null;
+        }> | null;
+        columns?: 2 | 3;
+        caption?: string;
+      }
+    | {
+        _key: string;
+        _type: "linkButton";
+        label?: string;
+        href?: string;
+        openInNewTab?: boolean;
+        variant?: "gradient" | "outline";
+        align?: "center" | "left";
+      }
+    | {
+        _key: string;
+        _type: "pullQuote";
+        quote?: string;
+        attribution?: string;
+        role?: string;
       }
     | {
         _key: string;
@@ -460,6 +751,35 @@ export type POST_QUERY_RESULT = {
             _key: string;
           } & TableRow
         >;
+      }
+    | {
+        _key: string;
+        _type: "tableOfContents";
+        title?: string;
+        includeH3?: boolean;
+      }
+    | {
+        _key: string;
+        _type: "video";
+        source?: "embed" | "upload";
+        url?: string;
+        file: {
+          url: string | null;
+          mimeType: string | null;
+        } | null;
+        autoplay?: boolean;
+        poster: {
+          asset?: SanityImageAssetReference;
+          media?: unknown;
+          hotspot?: SanityImageHotspot;
+          crop?: SanityImageCrop;
+          _type: "image";
+          lqip: string | null;
+          dimensions: SanityImageDimensions | null;
+        } | null;
+        aspectRatio?: "1/1" | "16/9" | "4/3" | "9/16";
+        title?: string;
+        caption?: string;
       }
   > | null;
   author: {
@@ -511,6 +831,39 @@ export type POST_QUERY_RESULT = {
 } | null;
 
 // Source: sanity/lib/queries.ts
+// Variable: POSTS_BY_AUTHOR_QUERY
+// Query: *[_type == "post" && defined(slug.current) && author->slug.current == $slug]  | order(coalesce(publishedAt, _createdAt) desc) {    _id,    title,    "slug": slug.current,    excerpt,    featured,    publishedAt,    mainImage {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },    "author": author->{ name, role, "slug": slug.current },    "categories": categories[]->{ _id, title, "slug": slug.current }  }
+export type POSTS_BY_AUTHOR_QUERY_RESULT = Array<{
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  excerpt: string | null;
+  featured: boolean | null;
+  publishedAt: string | null;
+  mainImage: {
+    asset?: SanityImageAssetReference;
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    alt?: string;
+    caption?: string;
+    _type: "image";
+    lqip: string | null;
+    dimensions: SanityImageDimensions | null;
+  } | null;
+  author: {
+    name: string | null;
+    role: string | null;
+    slug: string | null;
+  } | null;
+  categories: Array<{
+    _id: string;
+    title: string | null;
+    slug: string | null;
+  }> | null;
+}>;
+
+// Source: sanity/lib/queries.ts
 // Variable: POST_SLUGS_QUERY
 // Query: *[_type == "post" && defined(slug.current)]{ "slug": slug.current }
 export type POST_SLUGS_QUERY_RESULT = Array<{
@@ -530,7 +883,8 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '\n  *[_type == "post" && defined(slug.current)]\n  | order(coalesce(publishedAt, _createdAt) desc) {\n    _id,\n    title,\n    "slug": slug.current,\n    excerpt,\n    featured,\n    publishedAt,\n    mainImage { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n    "author": author->{ name, role, "slug": slug.current },\n    "categories": categories[]->{ _id, title, "slug": slug.current }\n  }\n': POSTS_QUERY_RESULT;
-    '\n  *[_type == "post" && slug.current == $slug][0] {\n    _id,\n    title,\n    "slug": slug.current,\n    excerpt,\n    publishedAt,\n    _updatedAt,\n    mainImage { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n    body[] {\n      ...,\n      _type == "image" => { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n }\n    },\n    "author": author->{\n      name,\n      role,\n      bio,\n      link,\n      "slug": slug.current,\n      image { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n }\n    },\n    "categories": categories[]->{ _id, title, "slug": slug.current },\n    "seo": {\n      "title": coalesce(seo.metaTitle, title),\n      "description": coalesce(seo.metaDescription, excerpt),\n      "ogImage": coalesce(seo.ogImage, mainImage),\n      "canonicalUrl": seo.canonicalUrl,\n      "noIndex": seo.noIndex == true\n    }\n  }\n': POST_QUERY_RESULT;
+    '\n  *[_type == "post" && slug.current == $slug][0] {\n    _id,\n    title,\n    "slug": slug.current,\n    excerpt,\n    publishedAt,\n    _updatedAt,\n    mainImage { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n    body[] {\n      ...,\n      // Inline links to other posts resolve to a live URL at query time.\n      _type == "block" => {\n        markDefs[] {\n          ...,\n          _type == "internalLink" => {\n            "href": "/blog/" + @.reference->slug.current\n          }\n        }\n      },\n      _type == "image" => { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n      _type == "imageGallery" => {\n        ...,\n        images[] { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n }\n      },\n      _type == "video" => {\n        ...,\n        poster { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n        "file": file.asset->{ url, mimeType }\n      }\n    },\n    "author": author->{\n      name,\n      role,\n      bio,\n      link,\n      "slug": slug.current,\n      image { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n }\n    },\n    "categories": categories[]->{ _id, title, "slug": slug.current },\n    "seo": {\n      "title": coalesce(seo.metaTitle, title),\n      "description": coalesce(seo.metaDescription, excerpt),\n      "ogImage": coalesce(seo.ogImage, mainImage),\n      "canonicalUrl": seo.canonicalUrl,\n      "noIndex": seo.noIndex == true\n    }\n  }\n': POST_QUERY_RESULT;
+    '\n  *[_type == "post" && defined(slug.current) && author->slug.current == $slug]\n  | order(coalesce(publishedAt, _createdAt) desc) {\n    _id,\n    title,\n    "slug": slug.current,\n    excerpt,\n    featured,\n    publishedAt,\n    mainImage { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n    "author": author->{ name, role, "slug": slug.current },\n    "categories": categories[]->{ _id, title, "slug": slug.current }\n  }\n': POSTS_BY_AUTHOR_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current)]{ "slug": slug.current }\n': POST_SLUGS_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current) && seo.noIndex != true]{\n    "slug": slug.current,\n    _updatedAt\n  }\n': POSTS_SITEMAP_QUERY_RESULT;
   }

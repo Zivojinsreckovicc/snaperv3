@@ -1,9 +1,7 @@
-import {
-  PortableText,
-  type PortableTextBlock,
-  type PortableTextComponents,
-} from "next-sanity";
+import { PortableText, type PortableTextBlock } from "next-sanity";
 import { CaretDown } from "@phosphor-icons/react/ssr";
+import { simpleTextComponents } from "./simple-text";
+import { toPlainText } from "@/sanity/lib/format";
 
 type FaqItem = {
   _key: string;
@@ -15,61 +13,6 @@ type FaqValue = {
   heading?: string;
   items?: FaqItem[];
 };
-
-// Compact components for the (deliberately simple) FAQ answer body.
-const answerComponents: PortableTextComponents = {
-  block: {
-    normal: ({ children }) => (
-      <p className="text-[0.9375rem] leading-relaxed text-muted-foreground [&:not(:first-child)]:mt-3">
-        {children}
-      </p>
-    ),
-  },
-  list: {
-    bullet: ({ children }) => (
-      <ul className="mt-3 list-disc space-y-1.5 pl-5 text-[0.9375rem] leading-relaxed text-muted-foreground marker:text-accent">
-        {children}
-      </ul>
-    ),
-    number: ({ children }) => (
-      <ol className="mt-3 list-decimal space-y-1.5 pl-5 text-[0.9375rem] leading-relaxed text-muted-foreground marker:text-accent">
-        {children}
-      </ol>
-    ),
-  },
-  marks: {
-    strong: ({ children }) => (
-      <strong className="font-semibold text-foreground">{children}</strong>
-    ),
-    em: ({ children }) => <em className="italic">{children}</em>,
-    link: ({ children, value }) => {
-      const href: string = value?.href ?? "#";
-      const external = value?.openInNewTab || !href.startsWith("/");
-      return (
-        <a
-          href={href}
-          target={value?.openInNewTab ? "_blank" : undefined}
-          rel={external ? "noopener noreferrer" : undefined}
-          className="font-medium text-accent underline underline-offset-4 transition-colors hover:text-brand-400"
-        >
-          {children}
-        </a>
-      );
-    },
-  },
-};
-
-/** Flattens a Portable Text answer to plain text for FAQPage structured data. */
-function toPlainText(blocks: PortableTextBlock[] = []): string {
-  return blocks
-    .map((block) =>
-      block._type === "block" && Array.isArray(block.children)
-        ? block.children.map((child) => child.text ?? "").join("")
-        : ""
-    )
-    .join("\n\n")
-    .trim();
-}
 
 export function BlogFaq({ value }: { value: FaqValue }) {
   const items = value?.items?.filter((i) => i?.question) ?? [];
@@ -119,7 +62,7 @@ export function BlogFaq({ value }: { value: FaqValue }) {
               {item.answer ? (
                 <PortableText
                   value={item.answer}
-                  components={answerComponents}
+                  components={simpleTextComponents}
                 />
               ) : null}
             </div>
