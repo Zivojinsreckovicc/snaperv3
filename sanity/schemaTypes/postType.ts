@@ -9,6 +9,7 @@ export const postType = defineType({
   groups: [
     { name: "content", title: "Content", default: true },
     { name: "seo", title: "SEO & Social" },
+    { name: "faq", title: "FAQ Schema" },
   ],
   fields: [
     defineField({
@@ -107,6 +108,12 @@ export const postType = defineType({
       title: "SEO & Social",
       type: "seo",
       group: "seo",
+    }),
+    defineField({
+      name: "faqSchema",
+      title: "FAQ schema",
+      type: "faqSchema",
+      group: "faq",
     }),
   ],
   preview: {

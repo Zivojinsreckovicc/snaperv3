@@ -1,13 +1,7 @@
-import { PortableText, type PortableTextBlock } from "next-sanity";
+import { PortableText } from "next-sanity";
 import { CaretDown } from "@phosphor-icons/react/ssr";
 import { simpleTextComponents } from "./simple-text";
-import { toPlainText } from "@/sanity/lib/format";
-
-type FaqItem = {
-  _key: string;
-  question: string;
-  answer?: PortableTextBlock[];
-};
+import type { FaqItem } from "@/sanity/lib/types";
 
 type FaqValue = {
   heading?: string;
@@ -18,25 +12,10 @@ export function BlogFaq({ value }: { value: FaqValue }) {
   const items = value?.items?.filter((i) => i?.question) ?? [];
   if (!items.length) return null;
 
-  const jsonLd = {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: items.map((item) => ({
-      "@type": "Question",
-      name: item.question,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: toPlainText(item.answer),
-      },
-    })),
-  };
-
+  // FAQPage JSON-LD is emitted once per page by the post route
+  // (see sanity/lib/faq-schema.ts), not per section.
   return (
     <section className="my-12">
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-      />
       {value.heading ? (
         <h2 className="mb-6 font-display text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
           {value.heading}

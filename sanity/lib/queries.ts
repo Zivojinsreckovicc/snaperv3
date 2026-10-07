@@ -71,6 +71,10 @@ export const POST_QUERY = defineQuery(`
       "ogImage": coalesce(seo.ogImage, mainImage),
       "canonicalUrl": seo.canonicalUrl,
       "noIndex": seo.noIndex == true
+    },
+    "faqSchema": {
+      "mode": coalesce(faqSchema.mode, "auto"),
+      "items": faqSchema.items[]{ _key, question, answer }
     }
   }
 `);

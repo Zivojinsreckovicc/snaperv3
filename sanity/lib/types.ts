@@ -10,6 +10,12 @@ export type SanityImageRef = {
 
 export type CategoryRef = { _id: string; title: string; slug?: string };
 
+export type FaqItem = {
+  _key: string;
+  question: string;
+  answer?: PortableTextBlock[];
+};
+
 export type PostCard = {
   _id: string;
   title: string;
@@ -46,5 +52,9 @@ export type PostFull = {
     ogImage?: SanityImageRef;
     canonicalUrl?: string;
     noIndex?: boolean;
+  };
+  faqSchema: {
+    mode: "auto" | "custom" | "off";
+    items?: FaqItem[] | null;
   };
 };

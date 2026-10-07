@@ -1,11 +1,10 @@
 import { defineArrayMember, defineField, defineType } from "sanity";
 import { HelpCircleIcon } from "@sanity/icons";
-import { simpleBlock } from "./shared";
 
 /**
  * An FAQ section embedded in the blog body. Content is authored here; the
- * frontend renders it as a styled, collapsible accordion (and emits FAQPage
- * JSON-LD). Each item is a question plus a short rich-text answer.
+ * frontend renders it as a styled, collapsible accordion. Its questions also
+ * feed the post's FAQPage schema while the FAQ Schema tab is on "Automatic".
  */
 export const faqType = defineType({
   name: "faqSection",
@@ -24,31 +23,7 @@ export const faqType = defineType({
       title: "Questions",
       type: "array",
       validation: (rule) => rule.required().min(1),
-      of: [
-        defineArrayMember({
-          type: "object",
-          name: "faqItem",
-          fields: [
-            defineField({
-              name: "question",
-              title: "Question",
-              type: "string",
-              validation: (rule) => rule.required(),
-            }),
-            defineField({
-              name: "answer",
-              title: "Answer",
-              type: "array",
-              validation: (rule) => rule.required(),
-              // Keep answers simple: paragraphs, lists, and inline emphasis.
-              of: [simpleBlock],
-            }),
-          ],
-          preview: {
-            select: { title: "question" },
-          },
-        }),
-      ],
+      of: [defineArrayMember({ type: "faqItem" })],
     }),
   ],
   preview: {

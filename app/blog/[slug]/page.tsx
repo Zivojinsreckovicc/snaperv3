@@ -13,6 +13,7 @@ import { client } from "@/sanity/lib/client";
 import { sanityFetch } from "@/sanity/lib/fetch";
 import { POST_QUERY, POST_SLUGS_QUERY } from "@/sanity/lib/queries";
 import { urlFor } from "@/sanity/lib/image";
+import { faqPageNode } from "@/sanity/lib/faq-schema";
 import { formatDate, readingTime } from "@/sanity/lib/format";
 import type { PostFull } from "@/sanity/lib/types";
 import { authorSlugs } from "@/lib/authors";
@@ -145,6 +146,8 @@ export default async function BlogPostPage({ params }: RouteProps) {
           { "@type": "ListItem", position: 3, name: post.title, item: url },
         ],
       },
+      // One FAQPage per page, built from the post's FAQ Schema tab.
+      ...[faqPageNode(post, url)].filter(Boolean),
     ],
   };
 

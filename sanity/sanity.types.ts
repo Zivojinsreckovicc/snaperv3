@@ -151,28 +151,43 @@ export type Video = {
 export type FaqSection = {
   _type: "faqSection";
   heading?: string;
-  items?: Array<{
-    question?: string;
-    answer?: Array<{
-      children?: Array<{
-        marks?: Array<string>;
-        text?: string;
-        _type: "span";
-        _key: string;
-      }>;
-      style?: "normal";
-      listItem?: "bullet" | "number";
-      markDefs?: Array<{
-        href?: string;
-        openInNewTab?: boolean;
-        _type: "link";
-        _key: string;
-      }>;
-      level?: number;
-      _type: "block";
+  items?: Array<
+    {
+      _key: string;
+    } & FaqItem
+  >;
+};
+
+export type FaqSchema = {
+  _type: "faqSchema";
+  mode?: "auto" | "custom" | "off";
+  items?: Array<
+    {
+      _key: string;
+    } & FaqItem
+  >;
+};
+
+export type FaqItem = {
+  _type: "faqItem";
+  question?: string;
+  answer?: Array<{
+    children?: Array<{
+      marks?: Array<string>;
+      text?: string;
+      _type: "span";
       _key: string;
     }>;
-    _type: "faqItem";
+    style?: "normal";
+    listItem?: "bullet" | "number";
+    markDefs?: Array<{
+      href?: string;
+      openInNewTab?: boolean;
+      _type: "link";
+      _key: string;
+    }>;
+    level?: number;
+    _type: "block";
     _key: string;
   }>;
 };
@@ -334,6 +349,7 @@ export type Post = {
   featured?: boolean;
   body?: BlockContent;
   seo?: Seo;
+  faqSchema?: FaqSchema;
 };
 
 export type SanityImageCrop = {
@@ -507,6 +523,8 @@ export type AllSanitySchemaTypes =
   | SanityFileAssetReference
   | Video
   | FaqSection
+  | FaqSchema
+  | FaqItem
   | Seo
   | PostReference
   | BlockContent
@@ -565,7 +583,7 @@ export type POSTS_QUERY_RESULT = Array<{
 
 // Source: sanity/lib/queries.ts
 // Variable: POST_QUERY
-// Query: *[_type == "post" && slug.current == $slug][0] {    _id,    title,    "slug": slug.current,    excerpt,    publishedAt,    _updatedAt,    mainImage {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },    body[] {      ...,      // Inline links to other posts resolve to a live URL at query time.      _type == "block" => {        markDefs[] {          ...,          _type == "internalLink" => {            "href": "/blog/" + @.reference->slug.current          }        }      },      _type == "image" => {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },      _type == "imageGallery" => {        ...,        images[] {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions }      },      _type == "video" => {        ...,        poster {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },        "file": file.asset->{ url, mimeType }      }    },    "author": author->{      name,      role,      bio,      link,      "slug": slug.current,      image {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions }    },    "categories": categories[]->{ _id, title, "slug": slug.current },    "seo": {      "title": coalesce(seo.metaTitle, title),      "description": coalesce(seo.metaDescription, excerpt),      "ogImage": coalesce(seo.ogImage, mainImage),      "canonicalUrl": seo.canonicalUrl,      "noIndex": seo.noIndex == true    }  }
+// Query: *[_type == "post" && slug.current == $slug][0] {    _id,    title,    "slug": slug.current,    excerpt,    publishedAt,    _updatedAt,    mainImage {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },    body[] {      ...,      // Inline links to other posts resolve to a live URL at query time.      _type == "block" => {        markDefs[] {          ...,          _type == "internalLink" => {            "href": "/blog/" + @.reference->slug.current          }        }      },      _type == "image" => {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },      _type == "imageGallery" => {        ...,        images[] {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions }      },      _type == "video" => {        ...,        poster {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions },        "file": file.asset->{ url, mimeType }      }    },    "author": author->{      name,      role,      bio,      link,      "slug": slug.current,      image {   ...,  "lqip": asset->metadata.lqip,  "dimensions": asset->metadata.dimensions }    },    "categories": categories[]->{ _id, title, "slug": slug.current },    "seo": {      "title": coalesce(seo.metaTitle, title),      "description": coalesce(seo.metaDescription, excerpt),      "ogImage": coalesce(seo.ogImage, mainImage),      "canonicalUrl": seo.canonicalUrl,      "noIndex": seo.noIndex == true    },    "faqSchema": {      "mode": coalesce(faqSchema.mode, "auto"),      "items": faqSchema.items[]{ _key, question, answer }    }  }
 export type POST_QUERY_RESULT = {
   _id: string;
   title: string | null;
@@ -665,30 +683,11 @@ export type POST_QUERY_RESULT = {
         _key: string;
         _type: "faqSection";
         heading?: string;
-        items?: Array<{
-          question?: string;
-          answer?: Array<{
-            children?: Array<{
-              marks?: Array<string>;
-              text?: string;
-              _type: "span";
-              _key: string;
-            }>;
-            style?: "normal";
-            listItem?: "bullet" | "number";
-            markDefs?: Array<{
-              href?: string;
-              openInNewTab?: boolean;
-              _type: "link";
-              _key: string;
-            }>;
-            level?: number;
-            _type: "block";
+        items?: Array<
+          {
             _key: string;
-          }>;
-          _type: "faqItem";
-          _key: string;
-        }>;
+          } & FaqItem
+        >;
       }
     | {
         _key: string;
@@ -828,6 +827,32 @@ export type POST_QUERY_RESULT = {
     canonicalUrl: string | null;
     noIndex: boolean | false;
   };
+  faqSchema: {
+    mode: "auto" | "custom" | "off";
+    items: Array<{
+      _key: string;
+      question: string | null;
+      answer: Array<{
+        children?: Array<{
+          marks?: Array<string>;
+          text?: string;
+          _type: "span";
+          _key: string;
+        }>;
+        style?: "normal";
+        listItem?: "bullet" | "number";
+        markDefs?: Array<{
+          href?: string;
+          openInNewTab?: boolean;
+          _type: "link";
+          _key: string;
+        }>;
+        level?: number;
+        _type: "block";
+        _key: string;
+      }> | null;
+    }> | null;
+  };
 } | null;
 
 // Source: sanity/lib/queries.ts
@@ -883,7 +908,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     '\n  *[_type == "post" && defined(slug.current)]\n  | order(coalesce(publishedAt, _createdAt) desc) {\n    _id,\n    title,\n    "slug": slug.current,\n    excerpt,\n    featured,\n    publishedAt,\n    mainImage { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n    "author": author->{ name, role, "slug": slug.current },\n    "categories": categories[]->{ _id, title, "slug": slug.current }\n  }\n': POSTS_QUERY_RESULT;
-    '\n  *[_type == "post" && slug.current == $slug][0] {\n    _id,\n    title,\n    "slug": slug.current,\n    excerpt,\n    publishedAt,\n    _updatedAt,\n    mainImage { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n    body[] {\n      ...,\n      // Inline links to other posts resolve to a live URL at query time.\n      _type == "block" => {\n        markDefs[] {\n          ...,\n          _type == "internalLink" => {\n            "href": "/blog/" + @.reference->slug.current\n          }\n        }\n      },\n      _type == "image" => { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n      _type == "imageGallery" => {\n        ...,\n        images[] { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n }\n      },\n      _type == "video" => {\n        ...,\n        poster { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n        "file": file.asset->{ url, mimeType }\n      }\n    },\n    "author": author->{\n      name,\n      role,\n      bio,\n      link,\n      "slug": slug.current,\n      image { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n }\n    },\n    "categories": categories[]->{ _id, title, "slug": slug.current },\n    "seo": {\n      "title": coalesce(seo.metaTitle, title),\n      "description": coalesce(seo.metaDescription, excerpt),\n      "ogImage": coalesce(seo.ogImage, mainImage),\n      "canonicalUrl": seo.canonicalUrl,\n      "noIndex": seo.noIndex == true\n    }\n  }\n': POST_QUERY_RESULT;
+    '\n  *[_type == "post" && slug.current == $slug][0] {\n    _id,\n    title,\n    "slug": slug.current,\n    excerpt,\n    publishedAt,\n    _updatedAt,\n    mainImage { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n    body[] {\n      ...,\n      // Inline links to other posts resolve to a live URL at query time.\n      _type == "block" => {\n        markDefs[] {\n          ...,\n          _type == "internalLink" => {\n            "href": "/blog/" + @.reference->slug.current\n          }\n        }\n      },\n      _type == "image" => { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n      _type == "imageGallery" => {\n        ...,\n        images[] { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n }\n      },\n      _type == "video" => {\n        ...,\n        poster { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n        "file": file.asset->{ url, mimeType }\n      }\n    },\n    "author": author->{\n      name,\n      role,\n      bio,\n      link,\n      "slug": slug.current,\n      image { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n }\n    },\n    "categories": categories[]->{ _id, title, "slug": slug.current },\n    "seo": {\n      "title": coalesce(seo.metaTitle, title),\n      "description": coalesce(seo.metaDescription, excerpt),\n      "ogImage": coalesce(seo.ogImage, mainImage),\n      "canonicalUrl": seo.canonicalUrl,\n      "noIndex": seo.noIndex == true\n    },\n    "faqSchema": {\n      "mode": coalesce(faqSchema.mode, "auto"),\n      "items": faqSchema.items[]{ _key, question, answer }\n    }\n  }\n': POST_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current) && author->slug.current == $slug]\n  | order(coalesce(publishedAt, _createdAt) desc) {\n    _id,\n    title,\n    "slug": slug.current,\n    excerpt,\n    featured,\n    publishedAt,\n    mainImage { \n  ...,\n  "lqip": asset->metadata.lqip,\n  "dimensions": asset->metadata.dimensions\n },\n    "author": author->{ name, role, "slug": slug.current },\n    "categories": categories[]->{ _id, title, "slug": slug.current }\n  }\n': POSTS_BY_AUTHOR_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current)]{ "slug": slug.current }\n': POST_SLUGS_QUERY_RESULT;
     '\n  *[_type == "post" && defined(slug.current) && seo.noIndex != true]{\n    "slug": slug.current,\n    _updatedAt\n  }\n': POSTS_SITEMAP_QUERY_RESULT;

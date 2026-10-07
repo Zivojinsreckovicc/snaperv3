@@ -5,6 +5,8 @@ import { authorType } from "./authorType";
 import { categoryType } from "./categoryType";
 import { blockContentType } from "./blockContentType";
 import { seoType } from "./seoType";
+import { faqItemType } from "./faqItemType";
+import { faqSchemaType } from "./faqSchemaType";
 
 // Body blocks (everything an editor can insert into a post).
 import { faqType } from "./faqType";
@@ -27,6 +29,8 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     // Shared objects
     blockContentType,
     seoType,
+    faqItemType,
+    faqSchemaType,
     // Body blocks
     faqType,
     videoType,
