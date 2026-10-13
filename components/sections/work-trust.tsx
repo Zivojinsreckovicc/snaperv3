@@ -32,7 +32,6 @@ const featured = [
     quote:
       "They rebuilt our website and qualified leads nearly doubled in two months. The site finally works the way our sales team needs it to.",
     name: "Marko Jovanovic",
-    role: "Founder, Helvetic",
     initials: "MJ",
     rating: 5,
   },
@@ -40,7 +39,6 @@ const featured = [
     quote:
       "Clear communication, fast delivery, and a site that finally looks premium. Exactly the kind of partner we were looking for.",
     name: "Daniel Roth",
-    role: "Director, Akademia Pro",
     initials: "DR",
     rating: 5,
   },
@@ -48,7 +46,6 @@ const featured = [
     quote:
       "Our conversion rate jumped the week we launched. The new pages are sharp, fast, and built around what actually drives sales.",
     name: "Sofia Markovic",
-    role: "CMO, Dominion Europe",
     initials: "SM",
     rating: 5,
   },
@@ -178,9 +175,6 @@ export function WorkTrust() {
                         aria-label="Verified client"
                         className="h-3.5 w-3.5 text-accent"
                       />
-                    </span>
-                    <span className="block truncate text-sm text-muted-foreground">
-                      {t.role}
                     </span>
                   </span>
                 </figcaption>

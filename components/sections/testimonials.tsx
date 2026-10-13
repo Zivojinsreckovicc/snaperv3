@@ -8,7 +8,6 @@ import { HomeSectionHeader } from "@/components/ui/home-section-heading";
 type Testimonial = {
   quote: string;
   name: string;
-  role: string;
   initials: string;
 };
 
@@ -18,42 +17,36 @@ const testimonials: Testimonial[] = [
     quote:
       "They rebuilt our website and our qualified leads nearly doubled in two months. The site finally works the way our sales team needs it to.",
     name: "Marko Jovanovic",
-    role: "Founder, Helvetic",
     initials: "MJ",
   },
   {
     quote:
       "The automation Snaper set up saves our team hours every week. Follow-ups that used to slip now just happen on their own.",
     name: "Ana Petrovic",
-    role: "Operations Lead, MTX Finance",
     initials: "AP",
   },
   {
     quote:
       "Clear communication, fast delivery, and a site that finally looks premium. Exactly the partner we were looking for.",
     name: "Daniel Roth",
-    role: "Director, Akademia Pro",
     initials: "DR",
   },
   {
     quote:
       "Our conversion rate jumped the week we launched. The new pages are sharp, fast, and built around what actually drives sales.",
     name: "Sofia Marković",
-    role: "CMO, Dominion Europe",
     initials: "SM",
   },
   {
     quote:
       "They understood the business goal first, then designed around it. The result feels custom in every detail, not templated.",
     name: "Luka Ilić",
-    role: "Founder, Breinrock",
     initials: "LI",
   },
   {
     quote:
       "From first call to launch it was effortless. They handled the hard parts and kept everything moving without the usual back and forth.",
     name: "Elena Novak",
-    role: "Head of Growth, ISM Global",
     initials: "EN",
   },
 ];
@@ -74,13 +67,8 @@ function Quote({ data }: { data: Testimonial }) {
       </blockquote>
       <figcaption className="mt-6 flex items-center gap-3">
         <Monogram initials={data.initials} />
-        <span>
-          <span className="block text-sm font-medium text-foreground">
-            {data.name}
-          </span>
-          <span className="block text-sm text-muted-foreground">
-            {data.role}
-          </span>
+        <span className="text-sm font-medium text-foreground">
+          {data.name}
         </span>
       </figcaption>
     </figure>
