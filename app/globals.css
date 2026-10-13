@@ -150,6 +150,7 @@
   --animate-glow-pulse: glow-pulse 4.5s ease-in-out infinite;
   --animate-shimmer: shimmer 2.5s linear infinite;
   --animate-marquee: marquee 38s linear infinite;
+  --animate-testimonial-marquee: testimonial-marquee 28s linear infinite;
 }
 
 /* ------------------------------------------------------------------ */
@@ -198,6 +199,16 @@
 @keyframes marquee {
   to {
     transform: translateX(-50%);
+  }
+}
+
+/* Keep testimonial motion on a translated layer, with no animated paint effects. */
+@keyframes testimonial-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
   }
 }
 

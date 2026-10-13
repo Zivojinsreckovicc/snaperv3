@@ -1,93 +1,126 @@
-"use client";
-
-import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Check } from "@phosphor-icons/react";
-import { Badge, Heading, Section } from "@/components/ui";
-import { Reveal } from "@/components/motion/reveal";
+import { ArrowDownRight, ArrowUpRight, Plus } from "@phosphor-icons/react/ssr";
+import { Container, Section } from "@/components/ui";
+import { HomeSectionHeading } from "@/components/ui/home-section-heading";
 
-const highlights = [
-  "Direct access to the people building your project",
-  "Conversion-first design, not decoration",
-  "Automation that removes repetitive work",
+const principles = [
+  {
+    title: "Direct access. Clear decisions.",
+    description:
+      "Work directly with the people designing and building your project. From the first conversation to launch, you know who to call and where things stand.",
+  },
+  {
+    title: "Every detail earns its place.",
+    description:
+      "Design, copy and code work toward the same goal: making it easier for the right customers to understand your business and take the next step.",
+  },
+  {
+    title: "Less busywork. More possibility.",
+    description:
+      "We connect your tools and automate repetitive tasks, giving your team more time for the work that needs a human touch.",
+  },
 ];
 
 export function About() {
   return (
-    <Section id="about" surface="default" className="overflow-hidden">
-      {/* Full-bleed grid (no Container) so the portrait can run to the left
-          edge of the screen. Capped to a centered 1536px frame: up to that
-          width the frame equals the viewport (laptop/mobile unchanged, the
-          portrait still bleeds to the screen edge); beyond it the frame caps
-          and centers so the layout keeps the laptop composition instead of
-          stretching the image and stranding the copy on ultra-wide (2K+)
-          screens. */}
-      <div className="mx-auto grid max-w-[1536px] items-center gap-10 lg:grid-cols-2 lg:gap-16">
-        {/* Founder portrait — bleeds to the left edge of the viewport */}
-        <Reveal className="order-1">
-          <figure className="relative">
-            <div className="relative aspect-square w-full overflow-hidden lg:aspect-[4/5] lg:max-h-[42rem] lg:rounded-r-[2.5rem]">
-              <Image
-                src="/imgs/zivojin-sreckovic.webp"
-                alt="Zivojin Sreckovic, founder of Snaper Digital"
-                fill
-                sizes="(min-width: 1024px) 50vw, 100vw"
-                className="object-cover object-top"
-              />
-            </div>
-            <figcaption className="mt-4 px-6 py-5 text-sm text-center text-muted-foreground sm:px-8 lg:px-0">
-              <span className="font-medium text-foreground">
-                Zivojin Sreckovic
-              </span>
-              , Founder
-            </figcaption>
-          </figure>
-        </Reveal>
+    <Section
+      id="about"
+      aria-labelledby="about-heading"
+      surface="default"
+      className="scroll-mt-20 overflow-hidden"
+    >
+      <Container>
+        <div className="flex items-center justify-between gap-6 border-t border-border-strong pt-5">
+          <p className="flex items-center gap-3 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-muted-foreground sm:text-xs">
+            <span aria-hidden="true" className="h-1.5 w-1.5 bg-accent" />
+            About Snaper Digital
+          </p>
+          <span className="hidden text-xs text-muted-foreground sm:block">
+            Independent agency. Shared ambition.
+          </span>
+          <ArrowDownRight
+            aria-hidden="true"
+            weight="light"
+            className="h-6 w-6 shrink-0 text-accent sm:hidden"
+          />
+        </div>
 
-        {/* Copy */}
-        <Reveal
-          delay={0.1}
-          className="order-2 px-6 sm:px-8 lg:max-w-xl lg:pr-10"
-        >
-          <Badge variant="muted">About Snaper Digital</Badge>
-          <Heading as={2} size="lg" className="mt-5">
-            Your senior digital partner.
-          </Heading>
-          <div className="mt-5 space-y-4 text-pretty text-base leading-relaxed text-muted-foreground">
-            <p>
-              Snaper Digital is a focused studio that builds the websites and
-              automation systems businesses actually rely on to win customers.
+        <div className="relative py-10 sm:py-14 lg:py-16">
+          <HomeSectionHeading
+            id="about-heading"
+            firstLine="Small agency."
+            outline="Serious"
+            accent="impact."
+            prominent
+          />
+          <ArrowDownRight
+            aria-hidden="true"
+            weight="thin"
+            className="absolute right-0 top-14 hidden h-20 w-20 text-accent lg:block"
+          />
+        </div>
+
+        <div className="grid gap-10 border-t border-border-strong pt-8 sm:gap-12 sm:pt-10 lg:grid-cols-[1fr_1.15fr] lg:gap-24">
+          <div className="flex flex-col items-start">
+            <p className="max-w-sm text-pretty text-2xl font-medium leading-snug tracking-[-0.035em] sm:text-3xl lg:text-4xl">
+              <span className="block">Your ambition.</span>
+              <span className="block">Our full attention.</span>
             </p>
-            <p>
-              No bloated retainers and no template factories. You work directly
-              with the people building your project, from the first call through
-              launch and beyond.
-            </p>
+            <Link
+              href="/about"
+              className="group mt-7 inline-flex min-h-11 items-center gap-4 text-sm font-medium lg:mt-10"
+            >
+              <span className="decoration-accent underline-offset-4 group-hover:underline group-focus-visible:underline">
+                The story behind Snaper
+              </span>
+              <span className="flex h-11 w-11 items-center justify-center rounded-full border border-border-strong transition-colors duration-200 group-hover:border-accent group-hover:bg-accent group-hover:text-accent-foreground group-focus-visible:border-accent group-focus-visible:bg-accent group-focus-visible:text-accent-foreground">
+                <ArrowUpRight
+                  aria-hidden="true"
+                  weight="bold"
+                  className="h-4 w-4 motion-safe:transition-transform motion-safe:duration-200 motion-safe:group-hover:-translate-y-0.5 motion-safe:group-hover:translate-x-0.5"
+                />
+              </span>
+            </Link>
           </div>
 
-          <ul className="mt-7 space-y-3">
-            {highlights.map((item) => (
-              <li key={item} className="flex items-start gap-3">
-                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-accent/12 text-accent">
-                  <Check weight="bold" className="h-3.5 w-3.5" />
-                </span>
-                <span className="text-sm text-foreground">{item}</span>
-              </li>
-            ))}
-          </ul>
+          <div>
+            <p className="max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+              We build websites that win customers and automation that gives you
+              time back. A focused team, close to your business, from the first
+              idea to what comes after launch.
+            </p>
 
-          <Link
-            href="/about"
-            className="group mt-8 inline-flex items-center gap-1.5 text-sm font-medium text-accent underline-offset-4 hover:underline"
-          >
-            Read our story
-            <ArrowRight
-              weight="bold"
-              className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
-            />
-          </Link>
-        </Reveal>
-      </div>
+            {/* Native disclosures keep the interaction keyboard-accessible and
+                usable without adding client state or an animation runtime. */}
+            <div className="mt-8 border-t border-border-strong sm:mt-10">
+              {principles.map((principle, index) => (
+                <details
+                  key={principle.title}
+                  name="about-principles"
+                  open={index === 0}
+                  className="group/principle border-b border-border-strong"
+                >
+                  <summary className="grid min-h-16 cursor-pointer list-none grid-cols-[1.75rem_1fr_1rem] items-center gap-2 py-5 transition-colors duration-200 hover:text-accent focus-visible:text-accent sm:grid-cols-[2rem_1fr_1rem] sm:gap-3 [&::-webkit-details-marker]:hidden">
+                    <span className="text-[0.65rem] tabular-nums text-muted-foreground transition-colors duration-200 group-open/principle:text-accent">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    <span className="text-sm font-medium tracking-[-0.015em] sm:text-base">
+                      {principle.title}
+                    </span>
+                    <Plus
+                      aria-hidden="true"
+                      className="h-4 w-4 group-open/principle:rotate-45 group-open/principle:text-accent motion-safe:transition-transform motion-safe:duration-200"
+                    />
+                  </summary>
+                  <p className="pb-6 pl-9 pr-6 text-sm leading-relaxed text-muted-foreground sm:pl-11">
+                    {principle.description}
+                  </p>
+                </details>
+              ))}
+            </div>
+          </div>
+        </div>
+      </Container>
     </Section>
   );
 }

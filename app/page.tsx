@@ -24,11 +24,11 @@ export default function Home() {
         <About />
         <ClientMarquee />
         <ServicesPreview />
-        <Process />
+        <Process homeHeading />
         <ServiceWebDevelopment />
         <ServiceAiAutomation />
-        <Testimonials />
-        <Contact />
+        <Testimonials homeHeading />
+        <Contact homeHeading />
       </main>
       <Footer />
     </>

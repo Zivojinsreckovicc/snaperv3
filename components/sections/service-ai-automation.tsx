@@ -7,7 +7,8 @@ import {
   Robot,
   type Icon,
 } from "@phosphor-icons/react";
-import { Badge, Container, Heading, Lead, Section } from "@/components/ui";
+import { Container, Lead, Section } from "@/components/ui";
+import { HomeSectionHeader } from "@/components/ui/home-section-heading";
 import { Reveal } from "@/components/motion/reveal";
 import { GrowthChart } from "@/components/visuals/growth-chart";
 
@@ -38,12 +39,14 @@ export function ServiceAiAutomation() {
   return (
     <Section id="ai-automation" surface="default">
       <Container>
-        <Reveal className="max-w-2xl">
-          <Badge variant="muted">AI Automation</Badge>
-          <Heading as={2} size="lg" className="mt-5">
-            Automate the work that slows you down.
-          </Heading>
-          <Lead className="mt-4">
+        <Reveal>
+          <HomeSectionHeader
+            eyebrow="AI Automation"
+            firstLine="Automate the work"
+            outline="That slows you"
+            accent="down."
+          />
+          <Lead className="mt-6 sm:mt-8">
             We map the repetitive parts of your business and hand them to
             systems that never forget a follow-up.
           </Lead>

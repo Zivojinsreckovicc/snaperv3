@@ -16,7 +16,8 @@ import {
   Target,
   type Icon,
 } from "@phosphor-icons/react";
-import { Badge, Container, Heading } from "@/components/ui";
+import { Container, Heading } from "@/components/ui";
+import { HomeSectionHeader } from "@/components/ui/home-section-heading";
 import { BrowserFrame } from "@/components/ui/browser-frame";
 import { CtaLink } from "@/components/ui/cta-link";
 import { Reveal } from "@/components/motion/reveal";
@@ -186,13 +187,17 @@ export function ServiceWebDevelopment() {
     >
       {/* Intro */}
       <Container className="pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16">
-        <div className="grid items-end gap-10 lg:grid-cols-2 lg:gap-16">
+        <Reveal>
+          <HomeSectionHeader
+            eyebrow="Web Development"
+            firstLine="Websites"
+            outline="Engineered to"
+            accent="convert."
+          />
+        </Reveal>
+        <div className="mt-8 grid items-end gap-10 lg:mt-10 lg:grid-cols-2 lg:gap-16">
           <Reveal>
-            <Badge variant="muted">Web Development</Badge>
-            <Heading as={2} size="lg" className="mt-5">
-              Websites engineered to convert.
-            </Heading>
-            <p className="mt-5 max-w-md text-pretty text-base leading-relaxed text-muted-foreground">
+            <p className="max-w-md text-pretty text-base leading-relaxed text-muted-foreground">
               We design and build fast, modern sites with a clear job: turn
               visitors into customers. {pinned ? "Scroll" : "Swipe"} through
               recent work below.

@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import { Container, Heading, Section } from "@/components/ui";
 import { Reveal } from "@/components/motion/reveal";
+import { HomeSectionHeader } from "@/components/ui/home-section-heading";
 
 type Testimonial = {
   quote: string;
@@ -103,16 +105,26 @@ function Row({
   const track = [...items, ...items];
 
   return (
-    <div className="group flex">
+    <div
+      tabIndex={0}
+      role="group"
+      aria-label="Scrolling client testimonials. Focus to pause."
+      className="relative isolate flex overflow-hidden py-2.5 [contain:layout_paint] hover:[--testimonials-play-state:paused] focus-within:[--testimonials-play-state:paused] motion-reduce:overflow-x-auto"
+    >
       <div
-        className="flex w-max animate-marquee will-change-transform group-hover:[animation-play-state:paused]"
+        className="flex w-max animate-testimonial-marquee [will-change:var(--testimonials-will-change,auto)] motion-reduce:animate-none motion-reduce:will-change-auto"
         style={{
           animationDuration: duration,
           animationDirection: reverse ? "reverse" : "normal",
+          animationPlayState: "var(--testimonials-play-state, paused)",
         }}
       >
         {track.map((t, i) => (
-          <div key={`${t.name}-${i}`} className="shrink-0 px-2.5">
+          <div
+            key={`${t.name}-${i}`}
+            aria-hidden={i >= items.length ? true : undefined}
+            className="shrink-0 px-2.5"
+          >
             <Quote data={t} />
           </div>
         ))}
@@ -121,33 +133,83 @@ function Row({
   );
 }
 
-export function Testimonials() {
+export function Testimonials({ homeHeading = false }: { homeHeading?: boolean }) {
+  const marqueeRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const marquee = marqueeRef.current;
+    if (!marquee) return;
+
+    let inView = false;
+    const updatePlayback = () => {
+      const playing = inView && !document.hidden;
+      // Only update on visibility changes. CSS handles every animation frame,
+      // and pausing preserves the current position for a seamless resume.
+      marquee.style.setProperty(
+        "--testimonials-play-state",
+        playing ? "running" : "paused",
+      );
+      marquee.style.setProperty(
+        "--testimonials-will-change",
+        playing ? "transform" : "auto",
+      );
+    };
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        inView = entry.isIntersecting;
+        updatePlayback();
+      },
+      { rootMargin: "100px 0px" },
+    );
+    observer.observe(marquee);
+    document.addEventListener("visibilitychange", updatePlayback);
+
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("visibilitychange", updatePlayback);
+      marquee.style.removeProperty("--testimonials-play-state");
+      marquee.style.removeProperty("--testimonials-will-change");
+    };
+  }, []);
+
   // Row B uses a reversed order so the two rows never mirror each other.
   const rowB = [...testimonials].reverse();
 
   return (
     <Section id="testimonials" surface="subtle" className="overflow-hidden">
       <Container>
-        <Reveal className="max-w-2xl">
-          <Heading as={2} size="lg">
-            What clients say.
-          </Heading>
+        <Reveal className={homeHeading ? undefined : "max-w-2xl"}>
+          {homeHeading ? (
+            <HomeSectionHeader
+              eyebrow="Testimonials"
+              firstLine="What our"
+              outline="clients"
+              accent="say."
+            />
+          ) : (
+            <Heading as={2} size="lg">
+              What clients say.
+            </Heading>
+          )}
         </Reveal>
       </Container>
 
-      {/* Full-width two-row carousel with frosted edge blur */}
-      <div className="relative mt-12 flex flex-col gap-5">
+      {/* Clip paint to the visible rows. Static fades preserve the soft edges
+          without re-blurring the moving cards on every frame. */}
+      <div ref={marqueeRef} className="relative mt-10 flex flex-col">
         <Row items={testimonials} duration="28s" />
         <Row items={rowB} duration="34s" reverse />
 
-        {/* Edge blur + color fade (left / right) */}
+        {/* These gradients are static; keep backdrop filters and masks off the
+            animated rows so the browser can composite their transforms. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background-subtle via-background-subtle/70 to-transparent backdrop-blur-[3px] [mask-image:linear-gradient(to_right,black_30%,transparent)] sm:w-40"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background-subtle via-background-subtle/70 to-transparent sm:w-40"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background-subtle via-background-subtle/70 to-transparent backdrop-blur-[3px] [mask-image:linear-gradient(to_left,black_30%,transparent)] sm:w-40"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background-subtle via-background-subtle/70 to-transparent sm:w-40"
         />
       </div>
     </Section>

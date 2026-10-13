@@ -24,12 +24,11 @@ import {
 } from "@phosphor-icons/react";
 import {
   Container,
-  Eyebrow,
-  Heading,
   Lead,
   Section,
 } from "@/components/ui";
 import { Reveal } from "@/components/motion/reveal";
+import { HomeSectionHeader } from "@/components/ui/home-section-heading";
 import { CtaLink } from "@/components/ui/cta-link";
 import { contactCta } from "@/lib/site";
 import { servicesContent, type ServiceContent } from "@/lib/services-data";
@@ -375,12 +374,14 @@ export function ServicesPreview() {
   return (
     <Section id="services" surface="default" className="overflow-hidden">
       <Container>
-        <Reveal className="max-w-2xl">
-          <Eyebrow>What we do</Eyebrow>
-          <Heading as={2} size="lg" className="mt-4">
-            Everything you need to grow online.
-          </Heading>
-          <Lead className="mt-4">
+        <Reveal>
+          <HomeSectionHeader
+            eyebrow="What we do"
+            firstLine="Everything you need"
+            outline="To grow"
+            accent="online."
+          />
+          <Lead className="mt-6 sm:mt-8">
             Five services, one partner, one connected system. Follow the line.
           </Lead>
         </Reveal>

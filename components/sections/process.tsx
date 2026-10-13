@@ -11,6 +11,7 @@ import {
 } from "@phosphor-icons/react";
 import { Container, Eyebrow, Heading, Section } from "@/components/ui";
 import { Reveal } from "@/components/motion/reveal";
+import { HomeSectionHeader } from "@/components/ui/home-section-heading";
 
 type Step = { num: string; title: string; desc: string; Icon: Icon };
 
@@ -53,7 +54,7 @@ const steps: Step[] = [
   },
 ];
 
-export function Process() {
+export function Process({ homeHeading = false }: { homeHeading?: boolean }) {
   return (
     <Section id="process" surface="subtle" className="relative overflow-hidden">
       <div
@@ -61,15 +62,26 @@ export function Process() {
         className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-radial-glow opacity-40"
       />
       <Container className="relative">
-        <Reveal className="mx-auto max-w-2xl text-center">
-          <Eyebrow dot className="justify-center">
-            Process
-          </Eyebrow>
-          <Heading as={2} size="xl" className="mt-4">
-            From idea to launch{" "}
-            <span className="text-gradient">without chaos</span>.
-          </Heading>
-        </Reveal>
+        {homeHeading ? (
+          <Reveal>
+            <HomeSectionHeader
+              eyebrow="Process"
+              firstLine="From idea to launch"
+              outline="Without"
+              accent="chaos."
+            />
+          </Reveal>
+        ) : (
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <Eyebrow dot className="justify-center">
+              Process
+            </Eyebrow>
+            <Heading as={2} size="xl" className="mt-4">
+              From idea to launch{" "}
+              <span className="text-gradient">without chaos</span>.
+            </Heading>
+          </Reveal>
+        )}
 
         <div className="relative mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {steps.map((s, i) => (
