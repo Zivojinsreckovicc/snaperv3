@@ -56,7 +56,6 @@ export const metadata: Metadata = {
     title: `${siteConfig.seoTitle}`,
     description: siteConfig.description,
     images: [siteConfig.ogImage],
-    creator: siteConfig.twitter,
   },
   robots: {
     index: true,

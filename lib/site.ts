@@ -18,7 +18,6 @@ export const siteConfig = {
   seoTitle: "Snaper Digital | Web Design & AI Automation Agency",
   ogImage: "/imgs/logo.webp",
   logo: "/imgs/logo.webp",
-  twitter: "@snaperdigital",
   email: "team@snaperdigital.com",
   phone: "+381 63 284 701",
   // Schema.org / structured-data telephone format.
@@ -34,7 +33,6 @@ export const siteConfig = {
   },
   // Working remotely with clients worldwide.
   socials: {
-    x: "https://x.com/snaperdigital",
     linkedin: "https://www.linkedin.com/company/snaper-digital/",
     instagram: "https://instagram.com/snaper.digital",
   },
