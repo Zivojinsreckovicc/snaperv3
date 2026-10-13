@@ -1,14 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CheckCircle, CircleNotch } from "@phosphor-icons/react";
 import { Button, Input, Label, Textarea } from "@/components/ui";
-import { submitWeb3Form } from "@/lib/web3forms";
+import { Turnstile, type TurnstileHandle } from "@/components/ui/turnstile";
+import { submitContactForm } from "@/lib/contact/actions";
+import {
+  CONTACT_TURNSTILE_ACTION,
+  TURNSTILE_RESPONSE_FIELD,
+  validateContactFields,
+  type ContactFieldErrors,
+} from "@/lib/contact/form";
 
-type Status = "idle" | "submitting" | "success" | "error";
-type Errors = Partial<Record<"name" | "email" | "message", string>>;
+type Status = "idle" | "submitting" | "success";
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const GENERIC_ERROR = "Something went wrong. Please try again or email us directly.";
+const CAPTCHA_PENDING = "Please complete the security check above.";
+const CAPTCHA_FAILED = "The security check failed or expired. Please try again.";
 
 type ContactFormProps = {
   subject?: string;
@@ -16,33 +24,44 @@ type ContactFormProps = {
 
 export function ContactForm({ subject }: ContactFormProps) {
   const [status, setStatus] = useState<Status>("idle");
-  const [errors, setErrors] = useState<Errors>({});
+  const [errors, setErrors] = useState<ContactFieldErrors>({});
+  const [formError, setFormError] = useState<string | null>(null);
+  const turnstileRef = useRef<TurnstileHandle>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData) as Record<string, string>;
 
     if (data.botcheck) return;
 
-    const next: Errors = {};
-    if (!data.name?.trim()) next.name = "Please enter your name.";
-    if (!data.email?.trim()) next.email = "Please enter your email.";
-    else if (!EMAIL_RE.test(data.email)) next.email = "Enter a valid email.";
-    if (!data.message?.trim()) next.message = "Tell us a little about the project.";
-
+    const next = validateContactFields(data);
     setErrors(next);
     if (Object.keys(next).length > 0) return;
 
-    setStatus("submitting");
-    try {
-      const ok = await submitWeb3Form(data, { subject });
-      if (!ok) throw new Error("Request failed");
-      form.reset();
-      setStatus("success");
-    } catch {
-      setStatus("error");
+    if (!data[TURNSTILE_RESPONSE_FIELD]) {
+      setFormError(CAPTCHA_PENDING);
+      return;
     }
+
+    setStatus("submitting");
+    setFormError(null);
+    try {
+      const result = await submitContactForm(formData, { subject });
+      if (result.ok) {
+        form.reset();
+        setStatus("success");
+        return;
+      }
+      if (result.fieldErrors) setErrors(result.fieldErrors);
+      setFormError(result.error === "captcha" ? CAPTCHA_FAILED : GENERIC_ERROR);
+    } catch {
+      setFormError(GENERIC_ERROR);
+    }
+    // Tokens are single-use, so every failed attempt needs a fresh one.
+    turnstileRef.current?.reset();
+    setStatus("idle");
   }
 
   if (status === "success") {
@@ -121,9 +140,11 @@ export function ContactForm({ subject }: ContactFormProps) {
           ) : null}
         </div>
 
-        {status === "error" ? (
-          <p className="text-sm text-red-600 dark:text-red-400">
-            Something went wrong. Please try again or email us directly.
+        <Turnstile ref={turnstileRef} action={CONTACT_TURNSTILE_ACTION} />
+
+        {formError ? (
+          <p role="alert" className="text-sm text-red-600 dark:text-red-400">
+            {formError}
           </p>
         ) : null}
 

@@ -69,7 +69,7 @@ export default function PrivacyPage() {
                 control you have over it.
               </Lead>
               <p className="mt-4 text-sm text-muted-foreground">
-                Last updated: June 22, 2026
+                Last updated: October 13, 2026
               </p>
             </Reveal>
           </Container>
@@ -170,8 +170,12 @@ export default function PrivacyPage() {
               </p>
               <ul>
                 <li>
-                  <strong>Web3Forms</strong> — delivers your contact form
+                  <strong>Resend</strong> — delivers your contact form
                   submissions to our inbox.
+                </li>
+                <li>
+                  <strong>Cloudflare Turnstile</strong> — checks that contact
+                  form submissions come from a real person, not a spam bot.
                 </li>
                 <li>
                   <strong>Make (Integromat)</strong> — routes contact submissions
