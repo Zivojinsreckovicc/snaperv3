@@ -2,7 +2,8 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { CaretRight, Sparkle } from "@phosphor-icons/react";
 import { Container, GradientText, Heading, Lead } from "@/components/ui";
 import { Rating } from "@/components/ui/rating";

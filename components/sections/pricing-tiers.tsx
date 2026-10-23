@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { ArrowUpRight, Check, Clock } from "@phosphor-icons/react";
 import { Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/reveal";

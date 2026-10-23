@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { Badge, Container, Heading, Lead, Section } from "@/components/ui";
 import { Reveal } from "@/components/motion/reveal";
 

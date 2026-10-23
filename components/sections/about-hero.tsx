@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { CaretRight } from "@phosphor-icons/react";
 import { Container, Eyebrow, GradientText, Heading, Lead } from "@/components/ui";
 

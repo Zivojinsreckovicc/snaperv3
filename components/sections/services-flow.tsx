@@ -7,10 +7,10 @@ import {
   useMotionTemplate,
   useMotionValue,
   useMotionValueEvent,
-  useReducedMotion,
   useScroll,
   useSpring,
 } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import {
   ArrowRight,
   ArrowUpRight,

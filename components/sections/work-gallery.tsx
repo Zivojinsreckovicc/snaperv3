@@ -5,9 +5,9 @@ import {
   AnimatePresence,
   motion,
   useMotionValue,
-  useReducedMotion,
   useSpring,
 } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { ArrowUpRight, TrendUp } from "@phosphor-icons/react";
 import { Container, Heading } from "@/components/ui";
 import { BrowserFrame } from "@/components/ui/browser-frame";

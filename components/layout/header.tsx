@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { CaretDown, X } from "@phosphor-icons/react";
 import { primaryNav, contactCta, siteConfig, type NavItem } from "@/lib/site";
 import { CtaLink } from "@/components/ui/cta-link";

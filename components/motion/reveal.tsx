@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion, type HTMLMotionProps } from "motion/react";
+import { motion, type HTMLMotionProps } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 
 type RevealProps = {
   /** Seconds of delay, e.g. for staggering a list by index * 0.06. */
@@ -22,7 +23,11 @@ export function Reveal({ delay = 0, y = 24, children, ...props }: RevealProps) {
       initial={reduce ? false : { opacity: 0, y, filter: "blur(6px)" }}
       whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
       viewport={{ once: true, amount: 0.25 }}
-      transition={{ duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }}
+      // Server-rendered leaves mount with `initial` applied before the
+      // reduced-motion preference is known, so finish them instantly instead.
+      transition={
+        reduce ? { duration: 0 } : { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }
+      }
       {...props}
     >
       {children}

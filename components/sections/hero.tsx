@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { Globe, TrendUp } from "@phosphor-icons/react";
 import { Container, GradientText } from "@/components/ui";
 import { CtaLink } from "@/components/ui/cta-link";

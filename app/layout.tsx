@@ -4,6 +4,7 @@ import "./globals.css";
 import { siteConfig } from "@/lib/site";
 import { DEFAULT_THEME, ThemeScript } from "@/components/theme/theme-script";
 import { ThemeProvider } from "@/components/theme/theme-provider";
+import { MotionProvider } from "@/components/motion/motion-provider";
 import { GoogleAnalytics } from "@/components/analytics/google-analytics";
 import { JsonLd } from "@/components/seo/json-ld";
 import { buildSiteNavigationJsonLd } from "@/lib/structured-data";
@@ -89,7 +90,9 @@ export default function RootLayout({
         <JsonLd data={buildSiteNavigationJsonLd()} />
       </head>
       <body className="min-h-full bg-background font-sans text-foreground antialiased">
-        <ThemeProvider>{children}</ThemeProvider>
+        <ThemeProvider>
+          <MotionProvider>{children}</MotionProvider>
+        </ThemeProvider>
         <GoogleAnalytics gaId={siteConfig.gaId} />
       </body>
     </html>

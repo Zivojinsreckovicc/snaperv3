@@ -1,6 +1,7 @@
 "use client";
 
-import { motion, useReducedMotion } from "motion/react";
+import { motion } from "motion/react";
+import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { Quotes, SealCheck } from "@phosphor-icons/react";
 import { Container, Heading } from "@/components/ui";
 import { Rating } from "@/components/ui/rating";
