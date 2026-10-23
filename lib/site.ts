@@ -35,6 +35,7 @@ export const siteConfig = {
   socials: {
     linkedin: "https://www.linkedin.com/company/snaper-digital/",
     instagram: "https://instagram.com/snaper.digital",
+    youtube: "https://www.youtube.com/@SnaperDigital",
   },
 } as const;
 

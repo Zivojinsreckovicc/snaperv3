@@ -1,11 +1,12 @@
 "use client";
 
-import { InstagramLogo, LinkedinLogo } from "@phosphor-icons/react";
+import { InstagramLogo, LinkedinLogo, YoutubeLogo } from "@phosphor-icons/react";
 import { siteConfig } from "@/lib/site";
 
 const links = [
   { href: siteConfig.socials.linkedin, label: "LinkedIn", Icon: LinkedinLogo },
   { href: siteConfig.socials.instagram, label: "Instagram", Icon: InstagramLogo },
+  { href: siteConfig.socials.youtube, label: "YouTube", Icon: YoutubeLogo },
 ];
 
 export function SocialLinks() {
