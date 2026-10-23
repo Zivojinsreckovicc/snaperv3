@@ -82,7 +82,7 @@ const faqs = [
   {
     question: "Do you work with businesses outside Serbia?",
     answer:
-      "Yes. We're based in Obrenovac, Serbia but work remotely with clients worldwide, across time zones, the same way we run every project.",
+      "Yes. We're based in Belgrade, Serbia but work remotely with clients worldwide, across time zones, the same way we run every project.",
   },
   {
     question: "What does a project cost?",

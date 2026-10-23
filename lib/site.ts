@@ -24,11 +24,11 @@ export const siteConfig = {
   phoneSchema: "+381-63-284-701",
   // E.164-style href target for tel: links (no spaces).
   phoneHref: "tel:+38163284701",
-  location: "Obrenovac, Serbia",
+  location: "Belgrade, Serbia",
   address: {
     street: "Topolice 9",
-    city: "Obrenovac",
-    postalCode: "21000",
+    city: "Belgrade",
+    postalCode: "11000",
     country: "Serbia",
   },
   // Working remotely with clients worldwide.

@@ -39,7 +39,7 @@ export const authors: AuthorProfile[] = [
       "I help businesses grow with fast, high-converting websites and smart automation.",
     image: "/imgs/zivojin-sreckovic.webp",
     initials: "ZS",
-    location: "Obrenovac, Serbia",
+    location: "Belgrade, Serbia",
     metaDescription:
       "Zivojin Srećković, founder of Snaper Digital — building fast, high-converting websites, AI chatbots and backend automations for businesses worldwide.",
     bio: [
