@@ -70,6 +70,22 @@ export const primaryNav: NavItem[] = [
 // hero, sections and footer so the page never ships duplicate CTA intent.
 export const contactCta = { label: "Start a project", href: "/contact" };
 
+/**
+ * Home page brand film (YouTube). Shared by the player section and the
+ * VideoObject JSON-LD so the two never drift apart.
+ */
+export const brandFilm = {
+  youtubeId: "9NwZMX5j31k",
+  title: "Another Tool Won't Grow Your Business",
+  description:
+    "This 90-second brand film sums up how we work. Your website should guide the right people, answer the right questions and turn attention into action. Your brand should feel unmistakably yours. Behind the scenes, your business should run just as intelligently: leads captured the moment they arrive, follow-ups sent when they matter, and data moving between your tools without another spreadsheet.",
+  uploadDate: "2026-10-23T04:24:44-07:00",
+  // ISO 8601 for JSON-LD, plus the human label shown in the caption.
+  duration: "PT1M33S",
+  durationLabel: "1:33",
+  thumbnail: "https://i.ytimg.com/vi/9NwZMX5j31k/maxresdefault.jpg",
+} as const;
+
 export type Service = {
   slug: string;
   title: string;

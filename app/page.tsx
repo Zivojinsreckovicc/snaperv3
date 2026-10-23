@@ -2,6 +2,7 @@ import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Hero } from "@/components/sections/hero";
 import { Stats } from "@/components/sections/stats";
+import { BrandFilm } from "@/components/sections/brand-film";
 import { About } from "@/components/sections/about";
 import { ClientMarquee } from "@/components/sections/client-marquee";
 import { ServicesPreview } from "@/components/sections/services-flow";
@@ -21,6 +22,7 @@ export default function Home() {
       <main>
         <Hero />
         <Stats />
+        <BrandFilm />
         <About />
         <ClientMarquee />
         <ServicesPreview />

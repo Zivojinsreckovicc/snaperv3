@@ -1,4 +1,4 @@
-import { primaryNav, services, siteConfig } from "@/lib/site";
+import { brandFilm, primaryNav, services, siteConfig } from "@/lib/site";
 import { projects } from "@/lib/projects";
 import { pricingTiers } from "@/lib/pricing";
 import type { AuthorProfile } from "@/lib/authors";
@@ -255,6 +255,19 @@ export function buildHomeJsonLd() {
             provider: { "@id": orgId },
           },
         })),
+      },
+      {
+        "@type": "VideoObject",
+        "@id": `${siteConfig.url}/#brand-film`,
+        name: brandFilm.title,
+        description: brandFilm.description,
+        thumbnailUrl: brandFilm.thumbnail,
+        uploadDate: brandFilm.uploadDate,
+        duration: brandFilm.duration,
+        contentUrl: `https://www.youtube.com/watch?v=${brandFilm.youtubeId}`,
+        embedUrl: `https://www.youtube.com/embed/${brandFilm.youtubeId}`,
+        publisher: { "@id": orgId },
+        inLanguage: "en",
       },
     ],
   };
