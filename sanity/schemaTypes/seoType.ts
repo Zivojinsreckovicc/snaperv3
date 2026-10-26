@@ -33,6 +33,19 @@ export const seoType = defineType({
         rule.max(160).warning("Keep the meta description under 160 characters."),
     }),
     defineField({
+      name: "metaKeywords",
+      title: "Meta keywords",
+      description:
+        "Type a keyword and press Enter to add it. Use 3 to 8 phrases specific to this post. Leave blank to use the site-wide keywords.",
+      type: "array",
+      of: [{ type: "string" }],
+      options: { layout: "tags" },
+      validation: (rule) => [
+        rule.unique(),
+        rule.max(10).warning("Keep it to 10 keywords or fewer."),
+      ],
+    }),
+    defineField({
       name: "ogImage",
       title: "Social share image",
       description:

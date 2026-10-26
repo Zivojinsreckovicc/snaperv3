@@ -68,6 +68,7 @@ export const POST_QUERY = defineQuery(`
     "seo": {
       "title": coalesce(seo.metaTitle, title),
       "description": coalesce(seo.metaDescription, excerpt),
+      "keywords": seo.metaKeywords,
       "ogImage": coalesce(seo.ogImage, mainImage),
       "canonicalUrl": seo.canonicalUrl,
       "noIndex": seo.noIndex == true

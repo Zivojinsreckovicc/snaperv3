@@ -1202,6 +1202,16 @@
           },
           "optional": true
         },
+        "metaKeywords": {
+          "type": "objectAttribute",
+          "value": {
+            "type": "array",
+            "of": {
+              "type": "string"
+            }
+          },
+          "optional": true
+        },
         "ogImage": {
           "type": "objectAttribute",
           "value": {

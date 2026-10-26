@@ -49,6 +49,7 @@ export type PostFull = {
   seo: {
     title?: string;
     description?: string;
+    keywords?: string[] | null;
     ogImage?: SanityImageRef;
     canonicalUrl?: string;
     noIndex?: boolean;

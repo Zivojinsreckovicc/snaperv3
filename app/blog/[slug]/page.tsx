@@ -62,6 +62,9 @@ export async function generateMetadata({
   return {
     title: { absolute: `${post.seo?.title ?? post.title} | Snaper Digital` },
     description: post.seo?.description,
+    // Only set when filled in: an explicit `keywords` key (even empty) would
+    // replace the site-wide keywords from the root layout.
+    ...(post.seo?.keywords?.length ? { keywords: post.seo.keywords } : {}),
     alternates: { canonical: post.seo?.canonicalUrl ?? `/blog/${post.slug}` },
     robots: post.seo?.noIndex ? { index: false, follow: false } : undefined,
     openGraph: {
