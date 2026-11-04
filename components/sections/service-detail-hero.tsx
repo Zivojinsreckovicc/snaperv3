@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { ArrowRight, CaretRight } from "@phosphor-icons/react";
-import { Badge, Container, GradientText, Heading, Lead } from "@/components/ui";
+import { Container, Eyebrow, GradientText, Heading, Lead } from "@/components/ui";
 import { CtaLink } from "@/components/ui/cta-link";
 import { contactCta } from "@/lib/site";
 import type { ServiceContent } from "@/lib/services-data";
@@ -59,9 +59,7 @@ export function ServiceDetailHero({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
             >
-              <Badge variant="muted">
-                {service.num} · {service.kicker}
-              </Badge>
+              <Eyebrow>{service.title}</Eyebrow>
             </motion.div>
 
             <motion.div
@@ -72,7 +70,7 @@ export function ServiceDetailHero({
               transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
             >
               <Heading as={1} size="xl" className="mt-5">
-                <GradientText>{service.title}</GradientText>
+                <GradientText>{service.seoHeading}</GradientText>
               </Heading>
             </motion.div>
 

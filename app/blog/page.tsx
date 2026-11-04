@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { CaretRight } from "@phosphor-icons/react/ssr";
 import { Header } from "@/components/layout/header";
 import { Footer } from "@/components/layout/footer";
 import { Container, Eyebrow, GradientText, Heading, Lead } from "@/components/ui";
@@ -15,17 +16,24 @@ import { siteConfig } from "@/lib/site";
 export const revalidate = 60;
 
 export const metadata: Metadata = {
-  title: { absolute: "Blog | Web Design, Development & AI Automation Insights" },
+  title: { absolute: "Web Design & AI Automation Blog | Snaper Digital" },
   description:
     "Practical articles on web design, development, conversion and AI automation from the Snaper Digital team. Clear, no-fluff advice for growing businesses.",
   alternates: { canonical: "/blog" },
   openGraph: {
     type: "website",
     url: `${siteConfig.url}/blog`,
-    title: "Snaper Digital Blog",
+    title: "Web Design & AI Automation Blog | Snaper Digital",
     description:
       "Practical articles on web design, development, conversion and AI automation for growing businesses.",
     images: [{ url: siteConfig.ogImage }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Web Design & AI Automation Blog | Snaper Digital",
+    description:
+      "Practical articles on web design, development, conversion and AI automation for growing businesses.",
+    images: [siteConfig.ogImage],
   },
 };
 
@@ -60,9 +68,20 @@ export default async function BlogPage() {
           />
           <Container className="relative">
             <Reveal>
-              <Eyebrow>Blog</Eyebrow>
+              <nav
+                aria-label="Breadcrumb"
+                className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground"
+              >
+                <Link href="/" className="transition-colors hover:text-foreground">
+                  Home
+                </Link>
+                <CaretRight weight="bold" className="h-3.5 w-3.5 opacity-60" />
+                <span className="text-foreground">Blog</span>
+              </nav>
+              <Eyebrow>Ideas worth shipping.</Eyebrow>
               <Heading as={1} size="display" className="mt-4 max-w-3xl">
-                Ideas worth <GradientText>shipping</GradientText>.
+                Practical Insights for Better Websites &amp;{" "}
+                <GradientText>Smarter Automation</GradientText>
               </Heading>
               <Lead className="mt-6">
                 Practical writing on web design, development, conversion and AI

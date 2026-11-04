@@ -52,7 +52,7 @@ function NavDropdown({ item }: { item: NavItem }) {
       </button>
       {/* pt-2 keeps the gap hoverable so the panel doesn't close in transit */}
       <div className="invisible absolute left-1/2 top-full z-50 w-56 -translate-x-1/2 pt-2 opacity-0 transition-all duration-200 group-hover:visible group-hover:opacity-100 group-focus-within:visible group-focus-within:opacity-100">
-        <div className="liquid-glass rounded-2xl border border-border/70 p-2">
+        <div className="rounded-2xl border border-border-strong bg-card p-2 shadow-soft">
           {children.map((child, i) => (
             <Link
               key={child.label}

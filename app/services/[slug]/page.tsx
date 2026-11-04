@@ -48,13 +48,13 @@ export async function generateMetadata({
     openGraph: {
       type: "website",
       url,
-      title: `${service.kicker} | ${siteConfig.name}`,
+      title: service.metaTitle,
       description: service.metaDescription,
       images: [{ url: siteConfig.ogImage }],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${service.kicker} | ${siteConfig.name}`,
+      title: service.metaTitle,
       description: service.metaDescription,
       images: [siteConfig.ogImage],
     },

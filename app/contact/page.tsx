@@ -128,10 +128,12 @@ export default function ContactPage() {
               {/* Left: pitch + details + steps */}
               <div>
                 <Reveal>
-                  <Eyebrow>Contact</Eyebrow>
+                  <Eyebrow>
+                    Let&apos;s build something that grows your business.
+                  </Eyebrow>
                   <Heading as={1} size="xl" className="mt-4">
-                    Let&apos;s build something that{" "}
-                    <GradientText>grows your business</GradientText>.
+                    Start a Web Design or{" "}
+                    <GradientText>AI Automation Project</GradientText>
                   </Heading>
                   <Lead className="mt-5">
                     Tell us about your website or automation project. You&apos;ll

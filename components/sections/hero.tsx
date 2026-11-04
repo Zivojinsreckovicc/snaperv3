@@ -3,7 +3,7 @@
 import { motion } from "motion/react";
 import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { Globe, TrendUp } from "@phosphor-icons/react";
-import { Container, GradientText } from "@/components/ui";
+import { Container, Eyebrow, GradientText } from "@/components/ui";
 import { CtaLink } from "@/components/ui/cta-link";
 import { HeroGlobeScene, HeroGlobeFallback } from "@/components/visuals/hero-globe";
 import { contactCta } from "@/lib/site";
@@ -103,19 +103,18 @@ export function Hero() {
       <Container className="pointer-events-none relative z-10 flex min-h-[100dvh] flex-col justify-center pb-20 pt-28 lg:pt-24">
         {/* Copy */}
         <div className="pointer-events-auto max-w-xl">
-          <motion.span
+          <motion.div
             {...rise(0)}
-            className="inline-flex items-center gap-2 rounded-full border border-accent/30 bg-accent/10 px-3.5 py-1.5 text-xs font-medium tracking-wide text-accent"
           >
-            Web design &amp; AI automation
-          </motion.span>
+            <Eyebrow>Websites and automation built to grow your business.</Eyebrow>
+          </motion.div>
 
           <motion.h1
             {...rise(0.08)}
             className="mt-6 font-display text-[clamp(2.6rem,6vw,4.5rem)] font-semibold leading-[1.03] tracking-[-0.03em] text-balance text-foreground"
           >
-            Websites and automation built to{" "}
-            <GradientText>grow your business</GradientText>.
+            Web Design &amp; AI Automation for{" "}
+            <GradientText>Growing Businesses</GradientText>
           </motion.h1>
 
           <motion.p

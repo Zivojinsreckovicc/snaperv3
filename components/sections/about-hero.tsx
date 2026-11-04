@@ -41,7 +41,7 @@ export function AboutHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
           >
-            <Eyebrow>The story</Eyebrow>
+            <Eyebrow>We make it like it&apos;s ours, because we care.</Eyebrow>
           </motion.div>
 
           <motion.div
@@ -50,8 +50,8 @@ export function AboutHero() {
             transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
           >
             <Heading as={1} size="display" className="mt-4">
-              We make it like it&apos;s ours,{" "}
-              <GradientText>because we care.</GradientText>
+              A Web Development &amp;{" "}
+              <GradientText>AI Automation Agency</GradientText>
             </Heading>
           </motion.div>
 

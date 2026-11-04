@@ -72,7 +72,7 @@ export function PricingHero() {
             transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
             className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"
           >
-            Transparent pricing
+            Pricing built around outcomes, not inflated scope.
           </motion.p>
 
           <motion.div
@@ -81,8 +81,8 @@ export function PricingHero() {
             transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
           >
             <Heading as={1} size="display" className="mt-4">
-              Pricing built around outcomes,{" "}
-              <GradientText>not inflated scope.</GradientText>
+              Website Design &amp; AI Automation{" "}
+              <GradientText>Pricing</GradientText>
             </Heading>
           </motion.div>
 

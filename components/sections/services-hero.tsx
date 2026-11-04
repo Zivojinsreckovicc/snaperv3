@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 import { CaretRight } from "@phosphor-icons/react";
-import { Badge, Container, GradientText, Heading, Lead } from "@/components/ui";
+import { Container, Eyebrow, GradientText, Heading, Lead } from "@/components/ui";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -48,7 +48,7 @@ export function ServicesHero() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
           >
-            <Badge variant="muted">Services</Badge>
+            <Eyebrow>Everything you need to grow online, under one roof.</Eyebrow>
           </motion.div>
 
           <motion.div
@@ -57,8 +57,8 @@ export function ServicesHero() {
             transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
           >
             <Heading as={1} size="display" className="mt-5">
-              Everything you need to{" "}
-              <GradientText>grow online</GradientText>, under one roof.
+              Web Development, AI Automation &amp;{" "}
+              <GradientText>Digital Services</GradientText>
             </Heading>
           </motion.div>
 

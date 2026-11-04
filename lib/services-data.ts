@@ -17,6 +17,9 @@ export type ServiceContent = {
   id: string;
   num: string;
   kicker: string;
+  /** Search-focused H1 for the standalone service page. */
+  seoHeading: string;
+  /** Shorter campaign line shown as the hero eyebrow. */
   title: string;
   /** Short summary used by the overview spine + home preview. */
   desc: string;
@@ -42,6 +45,7 @@ export const servicesContent: ServiceContent[] = [
     id: "web-development",
     num: "01",
     kicker: "Web Development",
+    seoHeading: "Custom Web Design & Development Services",
     title: "Custom websites engineered to convert.",
     desc: "We design and build fast, modern websites from scratch, never from templates. Every build is structured around your business goals, tuned for speed and SEO, and made genuinely easy to update.",
     deliverables: [
@@ -53,7 +57,7 @@ export const servicesContent: ServiceContent[] = [
       "Analytics & tracking setup",
     ],
     tools: ["Next.js", "React", "Tailwind", "Headless CMS"],
-    metaTitle: "Web Development | Custom Websites | Snaper Digital",
+    metaTitle: "Custom Web Development Services | Snaper Digital",
     metaDescription:
       "Custom, conversion-focused web development with Next.js. Fast, SEO-ready websites built from scratch around your business goals, never from templates.",
     intro:
@@ -120,6 +124,7 @@ export const servicesContent: ServiceContent[] = [
     id: "ai-automation",
     num: "02",
     kicker: "AI Automation",
+    seoHeading: "AI & Workflow Automation Services",
     title: "Systems that do the repetitive work for you.",
     desc: "We map the manual, repetitive parts of your business and hand them to systems that never forget a follow-up. Connected tools, automatic lead handling, and AI where it actually saves time and money.",
     deliverables: [
@@ -131,7 +136,7 @@ export const servicesContent: ServiceContent[] = [
       "Reporting dashboards",
     ],
     tools: ["Make", "n8n", "OpenAI", "Webhooks & APIs"],
-    metaTitle: "AI Automation | Workflow & CRM Automation | Snaper",
+    metaTitle: "AI & Workflow Automation Services | Snaper Digital",
     metaDescription:
       "Practical AI automation that removes manual busywork. Workflow and CRM automation, lead handling and AI follow-ups that save your team hours every week.",
     intro:
@@ -198,6 +203,7 @@ export const servicesContent: ServiceContent[] = [
     id: "branding",
     num: "03",
     kicker: "Brand & Creative Direction",
+    seoHeading: "Brand Identity & Creative Direction Services",
     title: "A brand that looks the part.",
     desc: "Visual identity and creative direction that make your business look established and trustworthy, a cohesive system that holds together across every touchpoint, from your website to your decks and ads.",
     deliverables: [
@@ -209,7 +215,7 @@ export const servicesContent: ServiceContent[] = [
       "Reusable design systems",
     ],
     tools: ["Figma", "Identity", "Guidelines"],
-    metaTitle: "Brand & Creative Direction | Identity Design | Snaper",
+    metaTitle: "Brand Identity & Creative Direction | Snaper Digital",
     metaDescription:
       "Brand identity and creative direction that make your business look established and trustworthy. Logos, guidelines and design systems built to last.",
     intro:
@@ -276,6 +282,7 @@ export const servicesContent: ServiceContent[] = [
     id: "landing-pages",
     num: "04",
     kicker: "Landing Page Design & Development",
+    seoHeading: "Custom Landing Page Design & Development",
     title: "One page with one job: convert.",
     desc: "High-converting landing pages built fast for launches, campaigns and paid ads. Structured around a single action, engineered to load instantly, and wired straight into your CRM and automations.",
     deliverables: [
@@ -354,6 +361,7 @@ export const servicesContent: ServiceContent[] = [
     id: "ecommerce",
     num: "05",
     kicker: "Ecommerce Development",
+    seoHeading: "Headless Ecommerce Development Services",
     title: "Headless stores built to scale and sell.",
     desc: "Custom headless ecommerce that is fast, flexible and fully yours. The storefront is decoupled from the backend for speed, total design control, and room to grow without fighting a rigid template.",
     deliverables: [
@@ -365,7 +373,7 @@ export const servicesContent: ServiceContent[] = [
       "Performance & SEO",
     ],
     tools: ["Shopify Hydrogen", "Headless", "Stripe", "Next.js"],
-    metaTitle: "Custom Headless Ecommerce Development | Snaper Digital",
+    metaTitle: "Headless Ecommerce Development | Snaper Digital",
     metaDescription:
       "Custom headless ecommerce that is fast, flexible and fully yours. A decoupled storefront built for speed, design control and room to scale and sell.",
     intro:

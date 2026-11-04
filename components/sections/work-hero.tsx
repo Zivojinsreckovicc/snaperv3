@@ -105,11 +105,11 @@ export function WorkHero() {
             transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
           >
             <p className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
-              Selected Work
+              Work that doesn&apos;t just look good. It performs.
             </p>
             <Heading as={1} size="display" className="mt-4">
-              Work that doesn&apos;t just look good.{" "}
-              <GradientText>It performs.</GradientText>
+              Web Design &amp; AI Automation{" "}
+              <GradientText>Case Studies</GradientText>
             </Heading>
           </motion.div>
 

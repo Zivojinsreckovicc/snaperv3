@@ -14,21 +14,23 @@ import { siteConfig } from "@/lib/site";
 export const metadata: Metadata = {
   // `absolute` opts out of the "%s | Snaper Digital" template, tuned to the
   // ~50-60 char SEO target.
-  title: { absolute: "Services | Web, AI Automation & Ecommerce | Snaper" },
+  title: {
+    absolute: "Web Development & AI Automation Services | Snaper Digital",
+  },
   description:
     "Web development, AI automation, branding, landing pages and custom headless ecommerce. Explore everything Snaper Digital designs, builds and automates.",
   alternates: { canonical: "/services" },
   openGraph: {
     type: "website",
     url: `${siteConfig.url}/services`,
-    title: "Services | Snaper Digital",
+    title: "Web Development & AI Automation Services | Snaper Digital",
     description:
       "Web development, AI automation, branding, landing pages and custom headless ecommerce, built and automated by Snaper Digital.",
     images: [{ url: siteConfig.ogImage }],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Services | Snaper Digital",
+    title: "Web Development & AI Automation Services | Snaper Digital",
     description:
       "Web development, AI automation, branding, landing pages and custom headless ecommerce, built by Snaper Digital.",
     images: [siteConfig.ogImage],
