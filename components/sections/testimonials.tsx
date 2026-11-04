@@ -193,11 +193,11 @@ export function Testimonials({ homeHeading = false }: { homeHeading?: boolean })
             animated rows so the browser can composite their transforms. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background-subtle via-background-subtle/70 to-transparent sm:w-40"
+          className="pointer-events-none absolute inset-y-0 left-0 z-10 w-20 bg-gradient-to-r from-background via-background/70 to-transparent sm:w-40"
         />
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background-subtle via-background-subtle/70 to-transparent sm:w-40"
+          className="pointer-events-none absolute inset-y-0 right-0 z-10 w-20 bg-gradient-to-l from-background via-background/70 to-transparent sm:w-40"
         />
       </div>
     </Section>

@@ -24,7 +24,7 @@ export function ServiceWebDevelopment() {
   return (
     <section
       id="web-development"
-      className="relative w-full bg-background-subtle text-foreground"
+      className="relative w-full bg-background text-foreground"
     >
       {/* Intro */}
       <Container className="pt-24 pb-12 sm:pt-28 sm:pb-14 lg:pt-32 lg:pb-16">

@@ -14,11 +14,29 @@ const company = [
   { label: "Contact", href: "/contact" },
 ];
 
+const specialistServices = [
+  ...services.map((service) => ({
+    label: service.title,
+    href:
+      service.slug === "website-design-development"
+        ? "/services/web-development"
+        : service.slug === "branding-creative-direction"
+          ? "/services/branding"
+          : service.slug === "consulting"
+            ? "/services"
+            : "/services/" + service.slug,
+  })),
+  {
+    label: "Web Development for SaaS",
+    href: "/web-development-for-saas-companies",
+  },
+];
+
 export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="relative overflow-hidden border-t border-border bg-background-subtle">
+    <footer className="relative overflow-hidden border-t border-border bg-background">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-radial-glow opacity-60 [transform:rotate(180deg)]"
@@ -57,13 +75,13 @@ export function Footer() {
           <nav aria-label="Services">
             <h2 className="text-sm font-semibold text-foreground">Services</h2>
             <ul className="mt-4 space-y-3">
-              {services.map((s) => (
-                <li key={s.slug}>
+              {specialistServices.map((service) => (
+                <li key={service.href + service.label}>
                   <Link
-                    href="/services"
+                    href={service.href}
                     className="text-sm text-muted-foreground transition-colors hover:text-foreground"
                   >
-                    {s.title}
+                    {service.label}
                   </Link>
                 </li>
               ))}

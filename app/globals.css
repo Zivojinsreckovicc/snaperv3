@@ -54,7 +54,8 @@
   color-scheme: dark;
 
   --background: #07070b;
-  --background-subtle: #0c0c13;
+  /* Keep section surfaces on one continuous black canvas in dark mode. */
+  --background-subtle: #07070b;
   --foreground: #f4f4f8;
 
   --card: #0d0d15;

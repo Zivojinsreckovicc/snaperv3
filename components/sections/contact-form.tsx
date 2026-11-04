@@ -20,9 +20,17 @@ const CAPTCHA_FAILED = "The security check failed or expired. Please try again."
 
 type ContactFormProps = {
   subject?: string;
+  submitLabel?: string;
+  messageLabel?: string;
+  messagePlaceholder?: string;
 };
 
-export function ContactForm({ subject }: ContactFormProps) {
+export function ContactForm({
+  subject,
+  submitLabel = "Send message",
+  messageLabel = "What can we help with?",
+  messagePlaceholder = "A few lines about your business and what you need.",
+}: ContactFormProps) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<ContactFieldErrors>({});
   const [formError, setFormError] = useState<string | null>(null);
@@ -127,12 +135,12 @@ export function ContactForm({ subject }: ContactFormProps) {
           </div>
         </div>
         <div>
-          <Label htmlFor="message">What can we help with?</Label>
+          <Label htmlFor="message">{messageLabel}</Label>
           <Textarea
             id="message"
             name="message"
             rows={5}
-            placeholder="A few lines about your business and what you need."
+            placeholder={messagePlaceholder}
             aria-invalid={!!errors.message}
           />
           {errors.message ? (
@@ -161,7 +169,7 @@ export function ContactForm({ subject }: ContactFormProps) {
               Sending
             </>
           ) : (
-            "Send message"
+            submitLabel
           )}
         </Button>
       </div>

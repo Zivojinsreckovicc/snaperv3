@@ -85,7 +85,7 @@ function DistributionBar({
 
 export function WorkTrust() {
   return (
-    <section className="relative w-full overflow-hidden bg-background-subtle py-20 sm:py-24 lg:py-28">
+    <section className="relative w-full overflow-hidden bg-background py-20 sm:py-24 lg:py-28">
       <div
         aria-hidden="true"
         className="pointer-events-none absolute inset-x-0 top-0 h-72 bg-radial-glow opacity-60"

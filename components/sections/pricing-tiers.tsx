@@ -94,7 +94,7 @@ function TierCard({ tier, index }: { tier: PricingTier; index: number }) {
 
 export function PricingTiers() {
   return (
-    <section id="pricing-plans" className="relative w-full bg-background-subtle py-20 sm:py-24 lg:py-28">
+    <section id="pricing-plans" className="relative w-full bg-background py-20 sm:py-24 lg:py-28">
       <Container>
         <Reveal className="mx-auto max-w-2xl text-center">
           <p className="text-pretty text-base leading-relaxed text-muted-foreground">

@@ -450,6 +450,82 @@ export function buildServiceDetailJsonLd(service: {
 }
 
 /**
+ * Builds Service, WebPage, breadcrumb and FAQ structured data for the
+ * SaaS-focused marketing website landing page.
+ */
+export function buildSaasMarketingWebsiteJsonLd(
+  faqs: { question: string; answer: string }[]
+) {
+  const orgId = siteConfig.url + "/#organization";
+  const url = siteConfig.url + "/web-development-for-saas-companies";
+  const name = "Web Development for SaaS Companies";
+  const description =
+    "Conversion-focused design and web development for SaaS marketing websites, campaign landing pages, demo flows and lead capture systems.";
+
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": url + "/#webpage",
+        url,
+        name,
+        description,
+        isPartOf: { "@id": siteConfig.url + "/#website" },
+        about: { "@id": url + "/#service" },
+        inLanguage: "en",
+      },
+      {
+        "@type": "Service",
+        "@id": url + "/#service",
+        name,
+        description,
+        serviceType: "SaaS marketing website design and development",
+        provider: { "@id": orgId },
+        areaServed: "Worldwide",
+        audience: {
+          "@type": "BusinessAudience",
+          audienceType: "SaaS companies running marketing campaigns",
+        },
+        url,
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "SaaS marketing website services",
+          itemListElement: [
+            "Positioning and page strategy",
+            "SaaS marketing website design",
+            "Front-end development",
+            "Campaign landing pages",
+            "Analytics and CRM integration",
+            "Technical SEO foundations",
+          ].map((item) => ({
+            "@type": "Offer",
+            itemOffered: { "@type": "Service", name: item },
+          })),
+        },
+      },
+      {
+        "@type": "BreadcrumbList",
+        "@id": url + "/#breadcrumb",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Home", item: siteConfig.url },
+          { "@type": "ListItem", position: 2, name, item: url },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        "@id": url + "/#faq",
+        mainEntity: faqs.map((faq) => ({
+          "@type": "Question",
+          name: faq.question,
+          acceptedAnswer: { "@type": "Answer", text: faq.answer },
+        })),
+      },
+    ],
+  };
+}
+
+/**
  * Builds the JSON-LD graph for the /about page: an AboutPage tied to the site's
  * Organization (with foundingDate and telephone), a BreadcrumbList, and a
  * FAQPage from the on-page Q&A. Reuses the Organization @id for a connected

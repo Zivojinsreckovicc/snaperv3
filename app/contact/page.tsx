@@ -227,7 +227,7 @@ export default function ContactPage() {
         </section>
 
         {/* FAQ */}
-        <section className="relative border-t border-border bg-background-subtle py-20 sm:py-24 lg:py-28">
+        <section className="relative border-t border-border bg-background py-20 sm:py-24 lg:py-28">
           <Container className="grid gap-12 lg:grid-cols-[0.8fr_1.2fr] lg:gap-16">
             <Reveal>
               <Eyebrow>FAQ</Eyebrow>

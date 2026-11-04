@@ -8,7 +8,9 @@ const spacing = {
 
 const surfaces = {
   default: "bg-background text-foreground",
-  subtle: "bg-background-subtle text-foreground",
+  // Section canvases stay continuous. Visual hierarchy belongs inside cards,
+  // borders and local effects—not in alternating full-width backgrounds.
+  subtle: "bg-background text-foreground",
   card: "bg-card text-card-foreground",
 } as const;
 
