@@ -37,20 +37,22 @@ export function Contact({
         className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-radial-glow opacity-70"
       />
       <Container className="relative">
-        {homeHeading && (
-          <Reveal className="mb-10 sm:mb-14">
-            <HomeSectionHeader
-              eyebrow="Get in touch"
-              firstLine="Let's build."
-              outline="Let's"
-              accent="grow."
-            />
-          </Reveal>
-        )}
-        <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
+        <div
+          className={`grid gap-12 lg:grid-cols-2 lg:gap-16 ${
+            homeHeading ? "border-t border-border-strong pt-5" : ""
+          }`}
+        >
           {/* Info */}
           <Reveal>
-            {!homeHeading && (
+            {homeHeading ? (
+              <HomeSectionHeader
+                eyebrow="Get in touch"
+                showRule={false}
+                firstLine="Let's build."
+                outline="Let's"
+                accent="grow."
+              />
+            ) : (
               <>
                 <Eyebrow>Get in touch</Eyebrow>
                 <Heading as={2} size="lg" className="mt-4">
@@ -58,7 +60,7 @@ export function Contact({
                 </Heading>
               </>
             )}
-            <Lead className={homeHeading ? undefined : "mt-4"}>
+            <Lead className={homeHeading ? "mt-12 sm:mt-14" : "mt-4"}>
               Tell us what you&apos;re working on. We&apos;ll reply with clear
               next steps, not a sales script.
             </Lead>
@@ -92,8 +94,8 @@ export function Contact({
           </Reveal>
 
           {/* Form */}
-          <Reveal delay={0.1}>
-            <ContactForm subject={subject} />
+          <Reveal delay={0.1} className={homeHeading ? "lg:pt-12" : undefined}>
+            <ContactForm subject={subject} detailed={homeHeading} />
           </Reveal>
         </div>
       </Container>

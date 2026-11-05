@@ -42,10 +42,11 @@ export function HomeSectionHeading({
 
 export function HomeSectionHeader({
   eyebrow,
+  showRule = true,
   ...headingProps
-}: HomeSectionHeadingProps & { eyebrow: string }) {
+}: HomeSectionHeadingProps & { eyebrow: string; showRule?: boolean }) {
   return (
-    <div className="border-t border-border-strong pt-5">
+    <div className={cn(showRule && "border-t border-border-strong pt-5")}>
       <p className="mb-8 flex items-center gap-3 text-[0.65rem] font-medium uppercase tracking-[0.16em] text-muted-foreground sm:mb-10 sm:text-xs">
         <span aria-hidden="true" className="h-1.5 w-1.5 bg-accent" />
         {eyebrow}

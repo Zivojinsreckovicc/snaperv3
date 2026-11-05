@@ -1,7 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
-import { CheckCircle, CircleNotch } from "@phosphor-icons/react";
+import { CaretDown, CheckCircle, CircleNotch } from "@phosphor-icons/react";
 import { Button, Input, Label, Textarea } from "@/components/ui";
 import { Turnstile, type TurnstileHandle } from "@/components/ui/turnstile";
 import { submitContactForm } from "@/lib/contact/actions";
@@ -23,13 +23,68 @@ type ContactFormProps = {
   submitLabel?: string;
   messageLabel?: string;
   messagePlaceholder?: string;
+  detailed?: boolean;
 };
+
+const projectTypes = [
+  "Website design & development",
+  "AI automation",
+  "Branding & creative direction",
+  "Consulting",
+  "Something else",
+];
+
+const budgets = [
+  "Under €2k",
+  "€2k – €5k",
+  "€5k – €10k",
+  "€10k+",
+  "Not sure yet",
+];
+
+const selectClass =
+  "h-11 w-full appearance-none rounded-xl border border-input bg-card px-4 pr-10 text-sm " +
+  "text-foreground transition-colors duration-200 focus-visible:outline-none " +
+  "focus-visible:border-accent focus-visible:ring-2 focus-visible:ring-accent/30";
+
+function Select({
+  id,
+  name,
+  placeholder,
+  options,
+}: {
+  id: string;
+  name: string;
+  placeholder: string;
+  options: string[];
+}) {
+  return (
+    <div className="relative">
+      <select id={id} name={name} defaultValue="" className={selectClass}>
+        <option value="" disabled>
+          {placeholder}
+        </option>
+        {options.map((option) => (
+          <option key={option} value={option}>
+            {option}
+          </option>
+        ))}
+      </select>
+      <CaretDown
+        weight="bold"
+        aria-hidden="true"
+        className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground"
+      />
+    </div>
+  );
+}
 
 export function ContactForm({
   subject,
   submitLabel = "Send message",
   messageLabel = "What can we help with?",
   messagePlaceholder = "A few lines about your business and what you need.",
+  detailed = false,
 }: ContactFormProps) {
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<ContactFieldErrors>({});
@@ -112,6 +167,22 @@ export function ContactForm({
         aria-hidden="true"
       />
       <div className="grid gap-5">
+        {detailed ? (
+          <div className="mb-1 flex items-start justify-between gap-5 border-b border-border pb-5">
+            <div>
+              <h3 className="font-display text-xl font-semibold tracking-tight text-foreground">
+                Tell us about your project
+              </h3>
+              <p className="mt-1 text-sm text-muted-foreground">
+                A few details help us give you a useful first reply.
+              </p>
+            </div>
+            <span className="shrink-0 rounded-full border border-border bg-background px-3 py-1.5 text-xs text-muted-foreground">
+              About 2 min
+            </span>
+          </div>
+        ) : null}
+
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
             <Label htmlFor="name">Name</Label>
@@ -134,13 +205,54 @@ export function ContactForm({
             ) : null}
           </div>
         </div>
+
+        {detailed ? (
+          <>
+            <div className="grid gap-5 sm:grid-cols-2">
+              <div>
+                <Label htmlFor="company">Company / website</Label>
+                <Input
+                  id="company"
+                  name="company"
+                  placeholder="acme.com (optional)"
+                />
+              </div>
+              <div>
+                <Label htmlFor="budget">Approximate budget</Label>
+                <Select
+                  id="budget"
+                  name="budget"
+                  placeholder="Select a range"
+                  options={budgets}
+                />
+              </div>
+            </div>
+
+            <div>
+              <Label htmlFor="projectType">What do you need?</Label>
+              <Select
+                id="projectType"
+                name="service"
+                placeholder="Choose a service"
+                options={projectTypes}
+              />
+            </div>
+          </>
+        ) : null}
+
         <div>
-          <Label htmlFor="message">{messageLabel}</Label>
+          <Label htmlFor="message">
+            {detailed ? "Project details" : messageLabel}
+          </Label>
           <Textarea
             id="message"
             name="message"
             rows={5}
-            placeholder={messagePlaceholder}
+            placeholder={
+              detailed
+                ? "Tell us about your business, goals, timeline and what you’re looking to build."
+                : messagePlaceholder
+            }
             aria-invalid={!!errors.message}
           />
           {errors.message ? (
@@ -172,6 +284,12 @@ export function ContactForm({
             submitLabel
           )}
         </Button>
+
+        {detailed ? (
+          <p className="text-center text-xs text-muted-foreground">
+            We&apos;ll only use your details to reply about your project.
+          </p>
+        ) : null}
       </div>
     </form>
   );

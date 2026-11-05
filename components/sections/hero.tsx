@@ -6,6 +6,7 @@ import { Globe, TrendUp } from "@phosphor-icons/react";
 import { Container, Eyebrow, GradientText } from "@/components/ui";
 import { CtaLink } from "@/components/ui/cta-link";
 import { HeroGlobeScene, HeroGlobeFallback } from "@/components/visuals/hero-globe";
+import { HeroBackdrop } from "@/components/visuals/hero-backdrop";
 import { contactCta } from "@/lib/site";
 
 const ease = [0.16, 1, 0.3, 1] as const;
@@ -62,11 +63,8 @@ export function Hero() {
   });
 
   return (
-    <section className="relative min-h-[100dvh] overflow-hidden bg-grid">
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-x-0 top-0 h-[80vh] bg-radial-glow"
-      />
+    <section className="relative isolate min-h-[100dvh] overflow-hidden bg-background">
+      <HeroBackdrop />
 
       {/* Visual: oversized interactive 3D Earth, anchored to the right edge and
           deliberately bleeding off-screen (clipped by the section). Desktop only.

@@ -1,4 +1,5 @@
 import { Container, Section } from "@/components/ui";
+import { HomeSectionHeader } from "@/components/ui/home-section-heading";
 import { Reveal } from "@/components/motion/reveal";
 import { InViewVideo } from "@/components/visuals/in-view-video";
 import { brandFilm } from "@/lib/site";
@@ -11,7 +12,7 @@ import { brandFilm } from "@/lib/site";
 export function BrandFilm() {
   return (
     <Section
-      aria-label="Snaper Digital brand film"
+      aria-labelledby="brand-film-heading"
       spacing="md"
       surface="default"
       className="overflow-hidden"
@@ -21,6 +22,17 @@ export function BrandFilm() {
         className="pointer-events-none absolute left-1/2 top-1/2 h-[70%] w-[85%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-accent/20 blur-[120px]"
       />
       <Container size="lg" className="relative">
+        <Reveal className="mb-10 sm:mb-14">
+          <HomeSectionHeader
+            id="brand-film-heading"
+            eyebrow="Our point of view"
+            showRule={false}
+            firstLine="More tools won’t."
+            outline="Clear systems"
+            accent="will."
+          />
+        </Reveal>
+
         <Reveal y={32}>
           <figure>
             <InViewVideo
