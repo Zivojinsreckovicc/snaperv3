@@ -5,9 +5,9 @@
 export const siteConfig = {
   name: "Snaper Digital",
   shortName: "Snaper",
-  // Update to the production domain before launch; used by metadataBase
+  // Production origin (the apex redirects to www); used by metadataBase
   // and canonical/OG URLs across the site.
-  url: "https://snaperdigital.com",
+  url: "https://www.snaperdigital.com",
   locale: "en_US",
   // Google Analytics 4 measurement ID (carried over from the previous site).
   gaId: "G-76QZVV1FWE",

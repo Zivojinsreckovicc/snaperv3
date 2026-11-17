@@ -14,9 +14,24 @@ type SiteverifyResponse = {
 };
 
 /**
+ * Frontend hostnames this deployment accepts tokens from, from the
+ * comma-separated TURNSTILE_HOSTNAMES. Production must list only the public
+ * domains, never localhost or 127.0.0.1.
+ */
+function expectedHostnames(): Set<string> {
+  return new Set(
+    (process.env.TURNSTILE_HOSTNAMES ?? "")
+      .split(",")
+      .map((hostname) => hostname.trim().toLowerCase())
+      .filter(Boolean),
+  );
+}
+
+/**
  * Validates a Turnstile token with Cloudflare. Tokens are single-use and
- * expire after five minutes. Fails closed: a missing secret, network error or
- * unexpected response all count as a failed check.
+ * expire after five minutes. Fails closed: a missing secret or hostname
+ * allowlist, network error, wrong action or unexpected hostname all count as a
+ * failed check.
  */
 export async function verifyTurnstileToken(
   token: string,
@@ -25,6 +40,11 @@ export async function verifyTurnstileToken(
   const secret = process.env.TURNSTILE_SECRET_KEY;
   if (!secret) {
     console.error("[turnstile] TURNSTILE_SECRET_KEY is not set; rejecting.");
+    return false;
+  }
+  const hostnames = expectedHostnames();
+  if (hostnames.size === 0) {
+    console.error("[turnstile] TURNSTILE_HOSTNAMES is not set; rejecting.");
     return false;
   }
   if (!token || token.length > MAX_TOKEN_LENGTH) return false;
@@ -48,9 +68,12 @@ export async function verifyTurnstileToken(
       console.warn("[turnstile] rejected:", result["error-codes"]);
       return false;
     }
-    // Cloudflare's testing keys omit `action`; real tokens always carry it.
-    if (result.action !== undefined && result.action !== action) {
+    if (result.action !== action) {
       console.warn(`[turnstile] unexpected action "${result.action}"`);
+      return false;
+    }
+    if (!result.hostname || !hostnames.has(result.hostname.toLowerCase())) {
+      console.warn(`[turnstile] unexpected hostname "${result.hostname}"`);
       return false;
     }
     return true;
