@@ -1,17 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import { Enter } from "@/components/motion/enter";
 import { CaretRight } from "@phosphor-icons/react";
 import { Container, Eyebrow, GradientText, Heading, Lead } from "@/components/ui";
 
-const EASE = [0.16, 1, 0.3, 1] as const;
-
 export function AboutHero() {
-  const reduce = useReducedMotion();
-  const animate = !reduce;
-
   return (
     <section className="relative overflow-hidden bg-grid pb-16 pt-32 sm:pb-20 sm:pt-40 lg:pb-24">
       <div
@@ -21,11 +15,11 @@ export function AboutHero() {
 
       <Container className="relative">
         {/* Breadcrumb */}
-        <motion.nav
+        <Enter
+          as="nav"
           aria-label="Breadcrumb"
-          initial={animate ? { opacity: 0, y: 12 } : false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          y={12}
+          duration={0.6}
           className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground"
         >
           <Link href="/" className="transition-colors hover:text-foreground">
@@ -33,32 +27,33 @@ export function AboutHero() {
           </Link>
           <CaretRight weight="bold" className="h-3.5 w-3.5 opacity-60" />
           <span className="text-foreground">About</span>
-        </motion.nav>
+        </Enter>
 
         <div className="max-w-3xl">
-          <motion.div
-            initial={animate ? { opacity: 0, y: 12 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
+          <Enter
+            y={12}
+            duration={0.6}
+            delay={0.05}
           >
             <Eyebrow>We make it like it&apos;s ours, because we care.</Eyebrow>
-          </motion.div>
+          </Enter>
 
-          <motion.div
-            initial={animate ? { opacity: 0, y: 18, filter: "blur(8px)" } : false}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
+          <Enter
+            y={18}
+            blur={8}
+            duration={0.8}
+            delay={0.12}
           >
             <Heading as={1} size="display" className="mt-4">
               A Web Development &amp;{" "}
               <GradientText>AI Automation Agency</GradientText>
             </Heading>
-          </motion.div>
+          </Enter>
 
-          <motion.div
-            initial={animate ? { opacity: 0, y: 16 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.22, ease: EASE }}
+          <Enter
+            y={16}
+            duration={0.8}
+            delay={0.22}
           >
             <Lead className="mt-6">
               We&apos;re a small team, but we move fast and stay sharp. Every
@@ -68,7 +63,7 @@ export function AboutHero() {
               doesn&apos;t just look good, but actually works. Our goal? To
               represent you the way you truly deserve.
             </Lead>
-          </motion.div>
+          </Enter>
         </div>
       </Container>
     </section>

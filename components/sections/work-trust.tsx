@@ -1,7 +1,10 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import {
+  revealVariants,
+  useScrollReveal,
+} from "@/components/motion/use-scroll-reveal";
 import { Quotes, SealCheck } from "@phosphor-icons/react";
 import { Container, Heading } from "@/components/ui";
 import { Rating } from "@/components/ui/rating";
@@ -61,7 +64,7 @@ function DistributionBar({
   pct: number;
   delay: number;
 }) {
-  const reduce = useReducedMotion();
+  const reveal = useScrollReveal<HTMLDivElement>(0.6);
   return (
     <div className="flex items-center gap-3">
       <span className="w-3 text-right text-xs font-medium text-muted-foreground">
@@ -69,10 +72,12 @@ function DistributionBar({
       </span>
       <div className="h-2 flex-1 overflow-hidden rounded-full bg-muted">
         <motion.div
-          initial={reduce ? false : { width: 0 }}
-          whileInView={{ width: `${pct}%` }}
-          viewport={{ once: true, amount: 0.6 }}
-          transition={{ duration: 0.9, delay, ease: EASE }}
+          {...reveal}
+          variants={revealVariants(
+            { width: 0 },
+            { width: `${pct}%` },
+            { duration: 0.9, delay, ease: EASE }
+          )}
           className="h-full rounded-full [background-image:linear-gradient(90deg,var(--color-brand-violet),var(--color-brand-blue))]"
         />
       </div>

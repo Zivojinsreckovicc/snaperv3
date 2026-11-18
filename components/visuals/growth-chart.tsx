@@ -1,7 +1,11 @@
 "use client";
 
-import { motion, type Transition } from "motion/react";
+import { motion } from "motion/react";
 import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import {
+  revealVariants,
+  useScrollReveal,
+} from "@/components/motion/use-scroll-reveal";
 import { TrendUp } from "@phosphor-icons/react";
 import { CountUp } from "@/components/motion/count-up";
 
@@ -30,9 +34,10 @@ const ease = [0.16, 1, 0.3, 1] as const;
 
 export function GrowthChart() {
   const reduce = useReducedMotion();
-  // `initial` is applied before the preference is known on server-rendered
-  // pages, so reduced-motion visitors get instant transitions instead.
-  const enter = (transition: Transition) => (reduce ? { duration: 0 } : transition);
+  // One reveal for the whole plot: server HTML shows the finished chart, and
+  // it only replays on scroll when it starts below the fold.
+  const { ref, initial, animate } = useScrollReveal<SVGSVGElement>(0.4);
+  const play = { initial, animate };
   const gridLines = [0, 25, 50, 75, 100];
   const last = SERIES.length - 1;
 
@@ -61,6 +66,7 @@ export function GrowthChart() {
 
       {/* Chart */}
       <svg
+        ref={ref}
         viewBox={`0 0 ${W} ${H}`}
         className="relative w-full"
         role="img"
@@ -109,10 +115,12 @@ export function GrowthChart() {
               rx={4}
               fill="url(#gc-bar)"
               style={{ transformBox: "fill-box", transformOrigin: "bottom" }}
-              initial={reduce ? false : { scaleY: 0 }}
-              whileInView={{ scaleY: 1 }}
-              viewport={{ once: true, amount: 0.4 }}
-              transition={enter({ duration: 0.7, delay: 0.2 + i * 0.06, ease })}
+              {...play}
+              variants={revealVariants(
+                { scaleY: 0 },
+                { scaleY: 1 },
+                { duration: 0.7, delay: 0.2 + i * 0.06, ease }
+              )}
             />
           );
         })}
@@ -121,10 +129,12 @@ export function GrowthChart() {
         <motion.path
           d={areaPath}
           fill="url(#gc-area)"
-          initial={reduce ? false : { opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={enter({ duration: 1, delay: 0.6, ease })}
+          {...play}
+          variants={revealVariants(
+            { opacity: 0 },
+            { opacity: 1 },
+            { duration: 1, delay: 0.6, ease }
+          )}
         />
 
         {/* Line */}
@@ -135,10 +145,12 @@ export function GrowthChart() {
           strokeWidth={3.5}
           strokeLinecap="round"
           strokeLinejoin="round"
-          initial={reduce ? false : { pathLength: 0 }}
-          whileInView={{ pathLength: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={enter({ duration: 1.6, ease })}
+          {...play}
+          variants={revealVariants(
+            { pathLength: 0 },
+            { pathLength: 1 },
+            { duration: 1.6, ease }
+          )}
         />
 
         {/* End marker */}
@@ -147,10 +159,12 @@ export function GrowthChart() {
           cy={y(SERIES[last])}
           r={6.5}
           fill="var(--color-brand-cyan)"
-          initial={reduce ? false : { scale: 0, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true, amount: 0.4 }}
-          transition={enter({ duration: 0.5, delay: 1.5, ease })}
+          {...play}
+          variants={revealVariants(
+            { scale: 0, opacity: 0 },
+            { scale: 1, opacity: 1 },
+            { duration: 0.5, delay: 1.5, ease }
+          )}
           style={{ transformBox: "fill-box", transformOrigin: "center" }}
         />
         {!reduce && (

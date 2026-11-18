@@ -1,12 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import { Enter } from "@/components/motion/enter";
 import { CaretRight } from "@phosphor-icons/react";
 import { Container, Eyebrow, GradientText, Heading, Lead } from "@/components/ui";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 const offerings = [
   "Web Development",
@@ -17,9 +14,6 @@ const offerings = [
 ];
 
 export function ServicesHero() {
-  const reduce = useReducedMotion();
-  const animate = !reduce;
-
   return (
     <section className="relative overflow-hidden bg-grid pb-12 pt-32 sm:pb-16 sm:pt-40 lg:pb-20">
       <div
@@ -28,11 +22,11 @@ export function ServicesHero() {
       />
 
       <Container className="relative">
-        <motion.nav
+        <Enter
+          as="nav"
           aria-label="Breadcrumb"
-          initial={animate ? { opacity: 0, y: 12 } : false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          y={12}
+          duration={0.6}
           className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground"
         >
           <Link href="/" className="transition-colors hover:text-foreground">
@@ -40,44 +34,46 @@ export function ServicesHero() {
           </Link>
           <CaretRight weight="bold" className="h-3.5 w-3.5 opacity-60" />
           <span className="text-foreground">Services</span>
-        </motion.nav>
+        </Enter>
 
         <div className="max-w-3xl">
-          <motion.div
-            initial={animate ? { opacity: 0, y: 12 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
+          <Enter
+            y={12}
+            duration={0.6}
+            delay={0.05}
           >
             <Eyebrow>Everything you need to grow online, under one roof.</Eyebrow>
-          </motion.div>
+          </Enter>
 
-          <motion.div
-            initial={animate ? { opacity: 0, y: 18, filter: "blur(8px)" } : false}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
+          <Enter
+            y={18}
+            blur={8}
+            duration={0.8}
+            delay={0.12}
           >
             <Heading as={1} size="display" className="mt-5">
               Web Development, AI Automation &amp;{" "}
               <GradientText>Digital Services</GradientText>
             </Heading>
-          </motion.div>
+          </Enter>
 
-          <motion.div
-            initial={animate ? { opacity: 0, y: 16 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.22, ease: EASE }}
+          <Enter
+            y={16}
+            duration={0.8}
+            delay={0.22}
           >
             <Lead className="mt-6">
               From the first pixel to the systems running quietly in the
               background, we design, build and automate the digital foundation
               your business runs on. One focused partner, the whole stack.
             </Lead>
-          </motion.div>
+          </Enter>
 
-          <motion.ul
-            initial={animate ? { opacity: 0, y: 16 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.32, ease: EASE }}
+          <Enter
+            as="ul"
+            y={16}
+            duration={0.8}
+            delay={0.32}
             className="mt-8 flex flex-wrap gap-2.5"
           >
             {offerings.map((o) => (
@@ -88,7 +84,7 @@ export function ServicesHero() {
                 {o}
               </li>
             ))}
-          </motion.ul>
+          </Enter>
         </div>
       </Container>
     </section>

@@ -203,7 +203,9 @@ export function WorkGallery() {
           layout={!reduce}
           className="mt-10 grid gap-6 sm:gap-8 lg:grid-cols-2"
         >
-          <AnimatePresence mode="popLayout">
+          {/* initial={false}: cards in the server HTML render visible instead of
+              waiting for hydration; filter changes still animate. */}
+          <AnimatePresence mode="popLayout" initial={false}>
             {visible.map((project, i) => (
               <motion.div
                 key={project.url}

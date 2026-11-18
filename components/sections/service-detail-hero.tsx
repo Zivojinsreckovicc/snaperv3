@@ -1,15 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import { Enter } from "@/components/motion/enter";
 import { ArrowRight, CaretRight } from "@phosphor-icons/react";
 import { Container, Eyebrow, GradientText, Heading, Lead } from "@/components/ui";
 import { CtaLink } from "@/components/ui/cta-link";
 import { contactCta } from "@/lib/site";
 import type { ServiceContent } from "@/lib/services-data";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function ServiceDetailHero({
   service,
@@ -18,9 +15,6 @@ export function ServiceDetailHero({
   service: ServiceContent;
   visual: React.ReactNode;
 }) {
-  const reduce = useReducedMotion();
-  const animate = !reduce;
-
   return (
     <section className="relative overflow-hidden bg-grid pb-12 pt-32 sm:pb-16 sm:pt-40 lg:pb-20">
       <div
@@ -30,11 +24,11 @@ export function ServiceDetailHero({
 
       <Container className="relative">
         {/* Breadcrumb */}
-        <motion.nav
+        <Enter
+          as="nav"
           aria-label="Breadcrumb"
-          initial={animate ? { opacity: 0, y: 12 } : false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          y={12}
+          duration={0.6}
           className="mb-8 flex flex-wrap items-center gap-1.5 text-sm text-muted-foreground"
         >
           <Link href="/" className="transition-colors hover:text-foreground">
@@ -49,43 +43,42 @@ export function ServiceDetailHero({
           </Link>
           <CaretRight weight="bold" className="h-3.5 w-3.5 opacity-60" />
           <span className="text-foreground">{service.kicker}</span>
-        </motion.nav>
+        </Enter>
 
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Copy */}
           <div>
-            <motion.div
-              initial={animate ? { opacity: 0, y: 12 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
+            <Enter
+              y={12}
+              duration={0.6}
+              delay={0.05}
             >
               <Eyebrow>{service.title}</Eyebrow>
-            </motion.div>
+            </Enter>
 
-            <motion.div
-              initial={
-                animate ? { opacity: 0, y: 18, filter: "blur(8px)" } : false
-              }
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
+            <Enter
+              y={18}
+              blur={8}
+              duration={0.8}
+              delay={0.12}
             >
               <Heading as={1} size="xl" className="mt-5">
                 <GradientText>{service.seoHeading}</GradientText>
               </Heading>
-            </motion.div>
+            </Enter>
 
-            <motion.div
-              initial={animate ? { opacity: 0, y: 16 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.22, ease: EASE }}
+            <Enter
+              y={16}
+              duration={0.8}
+              delay={0.22}
             >
               <Lead className="mt-5">{service.intro}</Lead>
-            </motion.div>
+            </Enter>
 
-            <motion.div
-              initial={animate ? { opacity: 0, y: 16 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.32, ease: EASE }}
+            <Enter
+              y={16}
+              duration={0.8}
+              delay={0.32}
               className="mt-8 flex flex-col items-start gap-3 sm:flex-row sm:items-center"
             >
               <CtaLink href={contactCta.href} size="lg">
@@ -101,13 +94,14 @@ export function ServiceDetailHero({
                   className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
                 />
               </Link>
-            </motion.div>
+            </Enter>
 
             {/* Tools */}
-            <motion.ul
-              initial={animate ? { opacity: 0, y: 16 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4, ease: EASE }}
+            <Enter
+              as="ul"
+              y={16}
+              duration={0.8}
+              delay={0.4}
               className="mt-8 flex flex-wrap gap-2"
             >
               {service.tools.map((t) => (
@@ -118,17 +112,18 @@ export function ServiceDetailHero({
                   {t}
                 </li>
               ))}
-            </motion.ul>
+            </Enter>
           </div>
 
           {/* Visual */}
-          <motion.div
-            initial={animate ? { opacity: 0, scale: 0.96, y: 20 } : false}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: EASE }}
+          <Enter
+            y={20}
+            scale={0.96}
+            duration={0.9}
+            delay={0.2}
           >
             {visual}
-          </motion.div>
+          </Enter>
         </div>
       </Container>
     </section>

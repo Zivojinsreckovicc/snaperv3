@@ -2,7 +2,10 @@
 
 import Link from "next/link";
 import { motion } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import {
+  revealVariants,
+  useScrollReveal,
+} from "@/components/motion/use-scroll-reveal";
 import { ArrowUpRight, Check, Clock } from "@phosphor-icons/react";
 import { Container } from "@/components/ui";
 import { Reveal } from "@/components/motion/reveal";
@@ -13,15 +16,17 @@ import { cn } from "@/lib/utils";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 function TierCard({ tier, index }: { tier: PricingTier; index: number }) {
-  const reduce = useReducedMotion();
+  const reveal = useScrollReveal<HTMLDivElement>(0.2);
   const featured = tier.featured;
 
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, y: 24 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.2 }}
-      transition={{ duration: 0.6, delay: index * 0.08, ease: EASE }}
+      {...reveal}
+      variants={revealVariants(
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0 },
+        { duration: 0.6, delay: index * 0.08, ease: EASE }
+      )}
       className={cn(
         "group relative flex h-full flex-col rounded-card p-6 shadow-soft transition-transform duration-300 sm:p-7",
         featured

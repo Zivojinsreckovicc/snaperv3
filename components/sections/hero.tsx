@@ -8,8 +8,7 @@ import { CtaLink } from "@/components/ui/cta-link";
 import { HeroGlobeScene, HeroGlobeFallback } from "@/components/visuals/hero-globe";
 import { HeroBackdrop } from "@/components/visuals/hero-backdrop";
 import { contactCta } from "@/lib/site";
-
-const ease = [0.16, 1, 0.3, 1] as const;
+import { Enter } from "@/components/motion/enter";
 
 /* Small floating glass stat, drifting gently over the visible globe (desktop only). */
 function FloatChip({
@@ -55,13 +54,6 @@ function FloatChip({
 }
 
 export function Hero() {
-  const reduce = useReducedMotion();
-  const rise = (delay: number) => ({
-    initial: reduce ? false : { opacity: 0, y: 24 },
-    animate: { opacity: 1, y: 0 },
-    transition: { duration: 0.7, delay, ease },
-  });
-
   return (
     <section className="relative isolate min-h-[100dvh] overflow-hidden bg-background">
       <HeroBackdrop />
@@ -101,30 +93,33 @@ export function Hero() {
       <Container className="pointer-events-none relative z-10 flex min-h-[100dvh] flex-col justify-center pb-20 pt-28 lg:pt-24">
         {/* Copy */}
         <div className="pointer-events-auto max-w-xl">
-          <motion.div
-            {...rise(0)}
-          >
+          <Enter y={24}>
             <Eyebrow>Websites and automation built to grow your business.</Eyebrow>
-          </motion.div>
+          </Enter>
 
-          <motion.h1
-            {...rise(0.08)}
+          <Enter
+            as="h1"
+            y={24}
+            delay={0.08}
             className="mt-6 font-display text-[clamp(2.6rem,6vw,4.5rem)] font-semibold leading-[1.03] tracking-[-0.03em] text-balance text-foreground"
           >
             Web Design &amp; AI Automation for{" "}
             <GradientText>Growing Businesses</GradientText>
-          </motion.h1>
+          </Enter>
 
-          <motion.p
-            {...rise(0.16)}
+          <Enter
+            as="p"
+            y={24}
+            delay={0.16}
             className="mt-6 max-w-md text-pretty text-lg leading-relaxed text-muted-foreground"
           >
             We design conversion-focused sites and automation systems that bring
             in more leads and cut the busywork that slows you down.
-          </motion.p>
+          </Enter>
 
-          <motion.div
-            {...rise(0.24)}
+          <Enter
+            y={24}
+            delay={0.24}
             className="mt-9 flex flex-col items-start gap-3 sm:flex-row sm:items-center"
           >
             <CtaLink href={contactCta.href} size="lg">
@@ -133,10 +128,11 @@ export function Hero() {
             <CtaLink href="/#services" variant="outline" size="lg">
               Explore services
             </CtaLink>
-          </motion.div>
+          </Enter>
 
-          <motion.div
-            {...rise(0.32)}
+          <Enter
+            y={24}
+            delay={0.32}
             className="mt-9 flex items-center gap-3 text-sm text-muted-foreground"
           >
             <Globe weight="light" className="h-5 w-5 text-accent" />
@@ -144,16 +140,17 @@ export function Hero() {
               Trusted by businesses in{" "}
               <span className="font-medium text-foreground">12+ countries</span>
             </span>
-          </motion.div>
+          </Enter>
         </div>
 
         {/* Mobile / touch: lightweight CSS orbit fallback in normal flow */}
-        <motion.div
-          {...rise(0.2)}
+        <Enter
+          y={24}
+          delay={0.2}
           className="pointer-events-auto mx-auto mt-14 w-full max-w-xs lg:hidden"
         >
           <HeroGlobeFallback />
-        </motion.div>
+        </Enter>
       </Container>
     </section>
   );

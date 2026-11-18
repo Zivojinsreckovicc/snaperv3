@@ -1,8 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import { Enter } from "@/components/motion/enter";
 import {
   CaretRight,
   Gauge,
@@ -12,8 +11,6 @@ import {
   type Icon,
 } from "@phosphor-icons/react";
 import { Container, GradientText, Heading, Lead } from "@/components/ui";
-
-const EASE = [0.16, 1, 0.3, 1] as const;
 
 const pillars: { Icon: Icon; title: string; body: string }[] = [
   {
@@ -39,9 +36,6 @@ const pillars: { Icon: Icon; title: string; body: string }[] = [
 ];
 
 export function PricingHero() {
-  const reduce = useReducedMotion();
-  const animate = !reduce;
-
   return (
     <section className="relative overflow-hidden bg-grid pb-16 pt-32 sm:pb-20 sm:pt-40 lg:pb-24">
       <div
@@ -51,11 +45,11 @@ export function PricingHero() {
 
       <Container className="relative">
         {/* Breadcrumb */}
-        <motion.nav
+        <Enter
+          as="nav"
           aria-label="Breadcrumb"
-          initial={animate ? { opacity: 0, y: 12 } : false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          y={12}
+          duration={0.6}
           className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground"
         >
           <Link href="/" className="transition-colors hover:text-foreground">
@@ -63,49 +57,51 @@ export function PricingHero() {
           </Link>
           <CaretRight weight="bold" className="h-3.5 w-3.5 opacity-60" />
           <span className="text-foreground">Pricing</span>
-        </motion.nav>
+        </Enter>
 
         <div className="max-w-3xl">
-          <motion.p
-            initial={animate ? { opacity: 0, y: 12 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
+          <Enter
+            as="p"
+            y={12}
+            duration={0.6}
+            delay={0.05}
             className="text-xs font-semibold uppercase tracking-[0.18em] text-accent"
           >
             Pricing built around outcomes, not inflated scope.
-          </motion.p>
+          </Enter>
 
-          <motion.div
-            initial={animate ? { opacity: 0, y: 18, filter: "blur(8px)" } : false}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
+          <Enter
+            y={18}
+            blur={8}
+            duration={0.8}
+            delay={0.12}
           >
             <Heading as={1} size="display" className="mt-4">
               Website Design &amp; AI Automation{" "}
               <GradientText>Pricing</GradientText>
             </Heading>
-          </motion.div>
+          </Enter>
 
-          <motion.div
-            initial={animate ? { opacity: 0, y: 16 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.22, ease: EASE }}
+          <Enter
+            y={16}
+            duration={0.8}
+            delay={0.22}
           >
             <Lead className="mt-6">
               Real-world ranges from shipped projects. Final investment depends
               on complexity, integrations, and delivery velocity.
             </Lead>
-          </motion.div>
+          </Enter>
         </div>
 
         {/* Value pillars */}
         <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {pillars.map(({ Icon, title, body }, i) => (
-            <motion.div
+            <Enter
               key={title}
-              initial={animate ? { opacity: 0, y: 20 } : false}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.32 + i * 0.07, ease: EASE }}
+              y={20}
+              duration={0.7}
+              delay={0.32 + i * 0.07}
               className="group rounded-card border border-border bg-card p-5 shadow-soft transition-colors hover:border-border-strong"
             >
               <span className="flex h-11 w-11 items-center justify-center rounded-xl border border-accent/20 bg-accent/10 text-accent transition-transform duration-300 group-hover:scale-110">
@@ -117,7 +113,7 @@ export function PricingHero() {
               <p className="mt-1.5 text-sm leading-relaxed text-muted-foreground">
                 {body}
               </p>
-            </motion.div>
+            </Enter>
           ))}
         </div>
       </Container>

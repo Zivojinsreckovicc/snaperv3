@@ -2,7 +2,6 @@
 
 import { useEffect, useRef } from "react";
 import { animate, useInView } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
 
 type CountUpProps = {
   to: number;
@@ -21,10 +20,13 @@ function format(value: number, decimals: number) {
 }
 
 /**
- * Counts from 0 to `to` once the element scrolls into view. The animated
- * value is written straight to the DOM node (textContent) via Motion's
- * `animate`, so it never re-renders React on every frame. Reduced-motion
- * users see the final number immediately.
+ * Counts from 0 to `to` once the element scrolls into view. The server HTML
+ * holds the final number, so the figure is readable before JavaScript loads.
+ * After hydration, a counter that is still below the fold is reset to 0 and
+ * counts up when scrolled to; one already on screen keeps its final value.
+ * The animated value is written straight to the DOM node (textContent) via
+ * Motion's `animate`, so it never re-renders React on every frame.
+ * Reduced-motion users always see the final number.
  */
 export function CountUp({
   to,
@@ -35,18 +37,22 @@ export function CountUp({
   className,
 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
+  const armed = useRef(false);
   const inView = useInView(ref, { once: true, amount: 0.5 });
-  const reduce = useReducedMotion();
 
   useEffect(() => {
     const node = ref.current;
     if (!node) return;
-
-    if (reduce) {
-      node.textContent = format(to, decimals);
-      return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    if (node.getBoundingClientRect().top >= window.innerHeight) {
+      node.textContent = format(0, decimals);
+      armed.current = true;
     }
-    if (!inView) return;
+  }, [decimals]);
+
+  useEffect(() => {
+    const node = ref.current;
+    if (!node || !inView || !armed.current) return;
 
     const controls = animate(0, to, {
       duration,
@@ -56,12 +62,12 @@ export function CountUp({
       },
     });
     return () => controls.stop();
-  }, [inView, reduce, to, decimals, duration]);
+  }, [inView, to, decimals, duration]);
 
   return (
     <span className={className}>
       {prefix}
-      <span ref={ref}>{format(reduce ? to : 0, decimals)}</span>
+      <span ref={ref}>{format(to, decimals)}</span>
       {suffix}
     </span>
   );

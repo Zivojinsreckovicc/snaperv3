@@ -1,7 +1,10 @@
 "use client";
 
 import { motion } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import {
+  revealVariants,
+  useScrollReveal,
+} from "@/components/motion/use-scroll-reveal";
 import { Badge, Container, Heading, Lead, Section } from "@/components/ui";
 import { Reveal } from "@/components/motion/reveal";
 
@@ -35,9 +38,31 @@ const milestones: { year: string; title: string; body: string }[] = [
   },
 ];
 
-export function AboutJourney() {
-  const reduce = useReducedMotion();
+/** One timeline entry; owns its scroll-reveal (hooks can't run in a map). */
+function MilestoneItem({
+  className,
+  children,
+}: {
+  className?: string;
+  children: React.ReactNode;
+}) {
+  const reveal = useScrollReveal<HTMLLIElement>(0.4);
+  return (
+    <motion.li
+      {...reveal}
+      variants={revealVariants(
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0 },
+        { duration: 0.6, ease: EASE }
+      )}
+      className={className}
+    >
+      {children}
+    </motion.li>
+  );
+}
 
+export function AboutJourney() {
   return (
     <Section id="journey" surface="subtle">
       <Container>
@@ -55,14 +80,7 @@ export function AboutJourney() {
           {milestones.map((m, i) => {
             const last = i === milestones.length - 1;
             return (
-              <motion.li
-                key={m.year}
-                initial={reduce ? false : { opacity: 0, y: 24 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, amount: 0.4 }}
-                transition={{ duration: 0.6, ease: EASE }}
-                className="flex gap-6"
-              >
+              <MilestoneItem key={m.year} className="flex gap-6">
                 {/* Marker + connector */}
                 <div className="flex flex-col items-center">
                   <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-accent/30 bg-accent/10 font-display text-sm font-semibold text-accent">
@@ -84,7 +102,7 @@ export function AboutJourney() {
                     {m.body}
                   </p>
                 </div>
-              </motion.li>
+              </MilestoneItem>
             );
           })}
         </ol>

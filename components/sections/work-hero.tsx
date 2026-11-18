@@ -2,8 +2,7 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import { Enter } from "@/components/motion/enter";
 import { CaretRight, Sparkle } from "@phosphor-icons/react";
 import { Container, GradientText, Heading, Lead } from "@/components/ui";
 import { Rating } from "@/components/ui/rating";
@@ -25,12 +24,9 @@ const stats: Stat[] = [
   { to: 12, suffix: "+", label: "Industries served" },
 ];
 
-const EASE = [0.16, 1, 0.3, 1] as const;
-
 export function WorkHero() {
   const ref = useRef<HTMLDivElement>(null);
   const isDesktop = useIsDesktop();
-  const reduce = useReducedMotion();
 
   // Pointer-following spotlight — desktop only, pure CSS-var writes (no React
   // re-render per frame), so it stays cheap and never ships to touch devices.
@@ -42,8 +38,6 @@ export function WorkHero() {
     el.style.setProperty("--mx", `${e.clientX - r.left}px`);
     el.style.setProperty("--my", `${e.clientY - r.top}px`);
   }
-
-  const animate = !reduce;
 
   return (
     <section
@@ -70,11 +64,11 @@ export function WorkHero() {
 
       <Container className="relative">
         {/* Breadcrumb */}
-        <motion.nav
+        <Enter
+          as="nav"
           aria-label="Breadcrumb"
-          initial={animate ? { opacity: 0, y: 12 } : false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE }}
+          y={12}
+          duration={0.6}
           className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground"
         >
           <Link href="/" className="transition-colors hover:text-foreground">
@@ -82,14 +76,14 @@ export function WorkHero() {
           </Link>
           <CaretRight weight="bold" className="h-3.5 w-3.5 opacity-60" />
           <span className="text-foreground">Work</span>
-        </motion.nav>
+        </Enter>
 
         <div className="max-w-3xl">
           {/* Trust chip */}
-          <motion.div
-            initial={animate ? { opacity: 0, y: 12 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.05, ease: EASE }}
+          <Enter
+            y={12}
+            duration={0.6}
+            delay={0.05}
             className="inline-flex items-center gap-2.5 rounded-pill border border-border/70 bg-card/60 py-1.5 pl-3 pr-4 text-sm backdrop-blur-sm"
           >
             <Sparkle weight="fill" className="h-4 w-4 text-accent" />
@@ -97,12 +91,13 @@ export function WorkHero() {
             <span className="text-muted-foreground">
               Rated 4.9/5 by 30+ clients
             </span>
-          </motion.div>
+          </Enter>
 
-          <motion.div
-            initial={animate ? { opacity: 0, y: 18, filter: "blur(8px)" } : false}
-            animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-            transition={{ duration: 0.8, delay: 0.12, ease: EASE }}
+          <Enter
+            y={18}
+            blur={8}
+            duration={0.8}
+            delay={0.12}
           >
             <p className="mt-6 text-xs font-semibold uppercase tracking-[0.18em] text-accent">
               Work that doesn&apos;t just look good. It performs.
@@ -111,26 +106,27 @@ export function WorkHero() {
               Web Design &amp; AI Automation{" "}
               <GradientText>Case Studies</GradientText>
             </Heading>
-          </motion.div>
+          </Enter>
 
-          <motion.div
-            initial={animate ? { opacity: 0, y: 16 } : false}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.22, ease: EASE }}
+          <Enter
+            y={16}
+            duration={0.8}
+            delay={0.22}
           >
             <Lead className="mt-6">
               A selection of websites and systems we&apos;ve designed, built and
               shipped. Each one is engineered around a single goal: real,
               measurable results for the business behind it.
             </Lead>
-          </motion.div>
+          </Enter>
         </div>
 
         {/* Animated stat strip */}
-        <motion.dl
-          initial={animate ? { opacity: 0, y: 20 } : false}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.32, ease: EASE }}
+        <Enter
+          as="dl"
+          y={20}
+          duration={0.8}
+          delay={0.32}
           className="mt-14 grid grid-cols-2 gap-px overflow-hidden rounded-card border border-border bg-border lg:grid-cols-4"
         >
           {stats.map((s) => (
@@ -146,7 +142,7 @@ export function WorkHero() {
               <dt className="mt-1.5 text-sm text-muted-foreground">{s.label}</dt>
             </div>
           ))}
-        </motion.dl>
+        </Enter>
       </Container>
     </section>
   );

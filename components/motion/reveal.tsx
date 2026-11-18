@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type HTMLMotionProps } from "motion/react";
-import { useReducedMotion } from "@/components/hooks/use-reduced-motion";
+import { revealVariants, useScrollReveal } from "./use-scroll-reveal";
 
 type RevealProps = {
   /** Seconds of delay, e.g. for staggering a list by index * 0.06. */
@@ -12,22 +12,23 @@ type RevealProps = {
 
 /**
  * Scroll-reveal leaf. Fades + lifts content as it enters the viewport, once.
- * Uses Motion's whileInView (IntersectionObserver under the hood) — never a
- * scroll listener — and collapses to static under prefers-reduced-motion.
+ * Server HTML is always visible: only content still below the fold after
+ * hydration is hidden and revealed on scroll (see useScrollReveal), so slow
+ * devices never sit on invisible sections while JavaScript loads.
  */
 export function Reveal({ delay = 0, y = 24, children, ...props }: RevealProps) {
-  const reduce = useReducedMotion();
+  const { ref, initial, animate } = useScrollReveal<HTMLDivElement>(0.25);
 
   return (
     <motion.div
-      initial={reduce ? false : { opacity: 0, y, filter: "blur(6px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-      viewport={{ once: true, amount: 0.25 }}
-      // Server-rendered leaves mount with `initial` applied before the
-      // reduced-motion preference is known, so finish them instantly instead.
-      transition={
-        reduce ? { duration: 0 } : { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }
-      }
+      ref={ref}
+      variants={revealVariants(
+        { opacity: 0, y, filter: "blur(6px)" },
+        { opacity: 1, y: 0, filter: "blur(0px)" },
+        { duration: 0.7, delay, ease: [0.16, 1, 0.3, 1] }
+      )}
+      initial={initial}
+      animate={animate}
       {...props}
     >
       {children}
